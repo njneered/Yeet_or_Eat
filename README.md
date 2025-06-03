@@ -9,7 +9,7 @@ A full-stack web application where users can review local restaurants, individua
 - **Frontend**: React.js
 - **Backend**: Python Flask
 - **Database**: PostgreSQL
-- **Auth**: JWT or OAuth
+- **Auth**: JWT
 
 ---
 
