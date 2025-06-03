@@ -15,3 +15,9 @@ requests
 
 # CORS handling (for frontend-backend integration)
 flask-cors
+
+# Image handling
+Flask-Uploads || Pillow
+
+# Authentication
+PyJWT
