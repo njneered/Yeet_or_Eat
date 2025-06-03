@@ -1,0 +1,20 @@
+# Ignore Python auto-generated compiled files
+backend/__pycache__/ 
+
+# Ignore Python virtual environments (local package installs for backend)
+backend/venv/
+
+# Ignore backend environment variables file (contains sensitive credentials)
+backend/.env
+
+# Ignore frontend Node.js packages directory (local package installs for React)
+frontend/node_modules/
+
+# Ignore frontend environment variables file (contains sensitive API keys)
+frontend/.env
+
+# Ignore system-generated files on macOS
+.DS_Store
+
+# (Optional catch-all) Ignore any accidentally created root-level .env file
+.env
