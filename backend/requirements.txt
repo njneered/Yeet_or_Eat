@@ -1,0 +1,17 @@
+# Core web framework
+Flask
+
+# ORM for database access
+Flask_SQLAlchemy
+
+# PostgreSQL DB driver
+psycopg2-binary
+
+# Environment variable loading
+python-dotenv
+
+# HTTP requests (for calling food APIs)
+requests
+
+# CORS handling (for frontend-backend integration)
+flask-cors
