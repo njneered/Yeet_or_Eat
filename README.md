@@ -1,6 +1,6 @@
 # Yeet or Eat
 
-A full-stack web application where users can review local restaurants, individual dishes, upload imagery, and view restaurant-provided default images.
+A full-stack web application where users can review local restaurants, individual dishes, upload imagery, and view restaurant-provided default images. (Not Finalized) 
 
 ---
 
