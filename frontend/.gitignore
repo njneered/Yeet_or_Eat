@@ -1,0 +1,59 @@
+# --------------------
+#  React / Frontend
+# --------------------
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --------------------
+#  Python / Backend
+# --------------------
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+.ENV/
+
+# Flask / Debug
+instance/
+*.log
+
+# Pytest / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# VSCode settings (optional)
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment config
+.env
+.env.*
