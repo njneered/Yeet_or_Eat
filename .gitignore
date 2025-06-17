@@ -5,6 +5,22 @@
 /.pnp
 .pnp.js
 
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.sqlite3
+
+# Virtual env
+venv/
+
+# Dotenv
+.env
+
+# Flask migrations
+backend/migrations/
+
 # testing
 /coverage
 
