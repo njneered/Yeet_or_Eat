@@ -15,8 +15,41 @@ function Authentication(){
     function handleSubmit(event){
         // prevents page from reloading
         event.preventDefault();
+        // Get values from inputs
+        const email = event.target[0].value;
+        const password = event.target[1].value;
+        const username = isLoginMode ? null : event.target[2].value;
         alert(isLoginMode ? "Logging in..." : "Signing up...");
+
         // NEED TO CONNECT TO BACKEND LATER
+        const endpoint = isLoginMode ? '/login' : '/signup';
+        const url = `http://localhost:5050${endpoint}`;
+        console.log("Sending request to:", url);
+        console.log("Payload:", { email, password, ...(username && { username }) });
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password,
+                ...(username && { username }) // only include username if signing up
+            }),
+        })
+        .then(async (res) => {
+            const data = await res.json();
+            alert(data.message);
+            if (res.status === 200) {
+                // Redirect to feed / profile maybe?
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Something went wrong dawg. Please try again.');
+        })
+        
+
     }
 
     return (

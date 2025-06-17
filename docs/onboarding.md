@@ -52,6 +52,38 @@ Backend runs at: http://localhost:5050
 
 Configurable in config_settings.py
 
+🧬 DB Initialization
+
+For now, each developer will set up their own local PostgreSQL database for development. Follow these steps:
+
+1. Ensure PostgreSQL is running locally
+    # If you're on macOS, within terminal:
+    brew services start postgresql
+
+2. Create the database (once):
+    createdb yeetoreat_db
+
+3. Update your .env file (in backend/) with:
+    DATABASE_URL=postgresql://postgres:yourpassword@localhost/yeetoreat_db
+    SECRET_KEY=super-secret-dev-key
+    DEBUG=true
+
+4. Activate the virtual environment and run migrations:
+    cd backend
+    source venv/bin/activate  # (use venv\Scripts\activate on Windows)
+    flask db init             # Only once
+    flask db migrate -m "Initial migration"
+    flask db upgrade
+
+    This sets up the schema defined in db_models.py using Alembic.
+
+5. To reset the database (wipe and recreate all tables):
+    # In a Python shell with virtualenv active
+    from app import app, db
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+
 🧪 Test Routes (Backend)
 
 Use Postman, browser, or curl:
