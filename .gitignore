@@ -13,8 +13,7 @@ __pycache__/
 *.sqlite3
 
 # Virtual env
-backend/venv
-venv/
+backend/venv/
 
 # Dotenv
 .env
