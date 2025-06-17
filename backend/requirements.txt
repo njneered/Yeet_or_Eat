@@ -17,7 +17,8 @@ requests
 flask-cors
 
 # Image handling
-Flask-Uploads || Pillow
+Flask-Uploads
+Pillow
 
 # Authentication
 PyJWT
