@@ -54,35 +54,47 @@ function Authentication(){
 
     return (
     <>
-        <img src="/Yeet-or-Eat-Logo white.png" alt="Yeet or Eat Logo" className="logo" />
-
-
-        <div className= "auth-container">
-            <div className = "auth-box">
-                <h2> {isLoginMode ? "LET ME IIIIIIIN 😩" : "new phone who dis?"} </h2>
-
-                <form onSubmit = {handleSubmit}>
-                    <input type = "email" placeholder = "Email" required />
-                    <input type = "password" placeholder = "Password" required />
-
-                    {/*SHOW THIS EXTRA FIELD ONLY IF SIGNING UP */}
-                    {!isLoginMode && (
-                        <input type = "text" placeholder = "Username" required />
-                    )}
-
-                    <button type = "submit">
-                        {isLoginMode ? "Login" : "Create Account"}
-                    </button>
-                </form>
-
-                <p onClick = {handleToggle} className = "toggle-text">
-                    {isLoginMode
-                        ? "Need an account? Click here to Sign Up"
-                        : "Already have an account? Click here to Login"}
-                </p>
+        <div className="page-container">
+            {/* TOP BAR WITH ORANGE LOGO */}
+            <div className="top-bar">
+                <img
+                src="/logo-orange.png"
+                alt="Yeet or Eat Orange Logo"
+                className="logo-in-bar"
+                />
             </div>
-        </div>    
-    </>                
+
+            {/* MAIN BODY WITH WHITE LOGO AND AUTHENTICATION BOX */}
+            <main className = "auth-layout">
+                    <div className ="auth-graphic">
+                        <img
+                            src="/logo-white.png"
+                            alt="Yeet or Eat White Logo"
+                            className="auth-logo-white"
+                        />
+                    </div>      
+                    <div className = "auth-box"> 
+                        <h2>{isLoginMode ? "LET ME IIIIIIIN 😩" : "new phone who dis?"}</h2>
+                        <form onSubmit={handleSubmit}>
+                            <input type="email" placeholder="Email" required />
+                            <input type="password" placeholder="Password" required />
+                            {!isLoginMode && <input type="text" placeholder="Username" required />}
+                            <button type="submit">{isLoginMode ? "Login" : "Create Account"}</button>
+                        </form>
+                        <p onClick={handleToggle} className="toggle-text">
+                            {isLoginMode
+                            ? "Need an account? Click here to Sign Up"
+                            : "Already have an account? Click here to Login"}
+                        
+                        </p>
+                    </div>    
+            </main>            
+
+            <div className="bottom-bar" />
+        </div>
+    </>
+
+            
     );
 }
 
