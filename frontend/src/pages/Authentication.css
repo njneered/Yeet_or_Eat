@@ -29,7 +29,7 @@ body {
 /* Orange Bars */
 .top-bar, .bottom-bar {
   height: 60px;
-  background-color: #ff7a4f;
+  background-color: #f2443a;
   flex-shrink: 0;
 }
 
@@ -89,7 +89,7 @@ body {
   border-radius: 4px;
 }
 .auth-box button {
-  background: #ff7a4f;
+  background: #f2443a;
   color: #fff;
   border: none;
   border-radius: 100px;
@@ -99,13 +99,13 @@ body {
 }
 .auth-box button:hover {
   background: #fff;
-  color: #ff7a4f;
-  border-color: #ff7a4f;
+  color: #f2443a;
+  border-color: #f2443a;
   transform: scale(1.03);
 }
 .toggle-text {
   margin-top: 10px;
-  color: #ff7a4f;
+  color: #f2443a;
   font-weight: bold;
   cursor: pointer;
 }

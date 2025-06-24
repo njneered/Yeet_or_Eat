@@ -58,7 +58,7 @@ function Authentication(){
             {/* TOP BAR WITH ORANGE LOGO */}
             <div className="top-bar">
                 <img
-                src="/logo-orange.png"
+                src="/logo-red.png"
                 alt="Yeet or Eat Orange Logo"
                 className="logo-in-bar"
                 />
