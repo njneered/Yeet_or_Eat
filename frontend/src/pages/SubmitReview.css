@@ -1,0 +1,206 @@
+.submit-review{
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: "Fredoka", sans-serif;
+    color: #333;
+}
+
+.submit-review h2{
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.reviewer-info{
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 1rem;
+}
+
+input[type="text"],
+textarea,
+select{
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin: 0.5rem 0 1.5rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-sizing: border-box;
+    background-color: #fafafa;
+    font-family: "Fredoka", sans-serif;
+
+}
+
+textarea{
+    resize: vertical;
+    height: 120px;
+}
+
+.upload-section{
+    margin-bottom: 1.5rem;
+}
+
+.upload-box{
+    width: 100%;
+    height: 150px;
+    border: 2px dashed #ff6b6b;
+    color: #ff6b6b;
+    background-color: #fff8f8;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+}
+
+.upload-box:hover{
+    background-color: #fff0f0;
+}
+
+.upload-box:hover,
+.submit-button:hover{
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.upload-box img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.form-row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.rating-toggle {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* spacing between label and buttons */
+  margin: 1rem 0;
+}
+
+.rating-question {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.rating-options {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.option-button {
+  padding: 6px 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 2px solid #f2443a;
+  border-radius: 20px;
+  background: white;
+  color: #f2443a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Fredoka", sans-serif;
+}
+
+.option-button:hover {
+  background: #f2443a;
+  color: white;
+  transform: scale(1.03);
+}
+
+.option-button.selected {
+  background: #f2443a;
+  color: white;
+}
+
+
+.emoji-spectrum {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.emoji-option {
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.2s;
+  filter: grayscale(100%) brightness(0.8);
+  opacity: 0.5;
+}
+
+.emoji-option.selected {
+  filter: none;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.emoji-option:hover {
+  transform: scale(1.2);
+}
+
+
+
+.tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.tags label{
+    font-weight: 500;
+    margin-right: 0.5rem;
+}
+
+.tag{
+    background-color: #eee;
+    border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: "Fredoka", sans-serif;
+
+}
+
+.tag:hover{
+    background-color: #ddd;
+}
+
+.tag.selected{
+    background-color: #ff6b6b;
+    color: white;
+    border: 2px solid #ccc;
+}
+
+.submit-button{
+    background-color: #f2443a;
+    color: white;
+    border: 2px solid transparent;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    font-family: "Fredoka", sans-serif;
+
+}
+
+.submit-button:hover {
+    background: white;
+    color: #f2443a;
+    border-color: #f2443a;
+    transform: scale(1.03);
+}

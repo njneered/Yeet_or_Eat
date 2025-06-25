@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import Header from '../components/Header';
 
 import './Authentication.css';
 
@@ -55,15 +56,7 @@ function Authentication(){
     return (
     <>
         <div className="page-container">
-            {/* TOP BAR WITH ORANGE LOGO */}
-            <div className="top-bar">
-                <img
-                src="/logo-red.png"
-                alt="Yeet or Eat Orange Logo"
-                className="logo-in-bar"
-                />
-            </div>
-
+            <Header />
             {/* MAIN BODY WITH WHITE LOGO AND AUTHENTICATION BOX */}
             <main className = "auth-layout">
                     <div className ="auth-graphic">

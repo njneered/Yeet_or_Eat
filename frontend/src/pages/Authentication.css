@@ -26,20 +26,6 @@ body {
   gap: 2rem;
 }
 
-/* Orange Bars */
-.top-bar, .bottom-bar {
-  height: 60px;
-  background-color: #f2443a;
-  flex-shrink: 0;
-}
-
-.logo-in-bar {
-  position: absolute;
-  top: 10px;
-  left: 30px;
-  height: 40px;
-}
-
 /* Left Side: White Logo */
 .auth-graphic {
   flex: 0 0 45%;
