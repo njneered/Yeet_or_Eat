@@ -12,7 +12,7 @@ __pycache__/
 *.so
 *.sqlite3
 
-# Virtual env
+# Virtual env (If not using Poetry)
 backend/venv/
 
 # Dotenv
@@ -20,6 +20,7 @@ backend/venv/
 
 # Flask migrations
 backend/migrations/
+instance/
 
 # testing
 /coverage
@@ -39,3 +40,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea/
+
+# Poetry
+poetry.lock

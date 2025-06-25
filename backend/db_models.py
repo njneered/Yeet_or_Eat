@@ -6,6 +6,9 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
+# User model: stores user information.
+# Fields include user ID, username, email, and password hash. -- Most likely will need to include reviews to store user specific reviews. 
+# Passwords are hashed for security.
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique = True, nullable = False)

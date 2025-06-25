@@ -14,75 +14,111 @@ yeet_or_eat/
 
 ✅ Prerequisites
 
-General
+- Git
+- Node.js + npm
+- Python 3.x
+- Poetry
+- PostgreSQL (optional, for DB work)
 
-Git
+## Installing Poetry (one-time setup)
+On macOS / Linux:
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
 
-Node.js + npm
+- If CERTIFICATE_VERIFY_FAILED
+```bash
+/Applications/Python\ 3.12/Install\ Certificates.command
+```
 
-Python 3.x
+On Windows (PowerShell):
+```powershell
+(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -
+```
 
-PostgreSQL (optional, for DB work)
+Then verify:
+```bash
+poetry --version
+```
+
+To get install location:
+```bash
+which poetry
+```
+
+Add install location to Preferences: Open Settings (JSON)
+```json
+"terminal.integrated.env.osx": {
+  "PATH": ["Your Path:${env:PATH}"]
+}
+```
+- EX: /Users/mook./.local/bin/poetry -> "PATH": "/Users/mook./.local/bin:${env:PATH}"
+
+- To install any further dependencies just run:
+```bash
+poetry add [dependency]
+```
+
+Be sure to remove requirements.txt and venv!!
+```bash
+rm requirements.txt
+rm -rf venv
+```
 
 💻 Setting Up Frontend
 
+```bash
 cd frontend
 npm install
 npm start
+```
 
 App runs at: http://localhost:3000
 
 Update .env if needed:
 
+```
 REACT_APP_API_URL=http://localhost:5050
+```
 
 🐍 Setting Up Backend
 
+```bash
 cd backend
-python -m venv venv
-# Windows:
-venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
-
-pip install -r requirements.txt
-python run_backend.py
+poetry install                # Install dependencies
+poetry self add poetry-plugin-shell # Install Poetry shell plugin (One-time)
+poetry shell                  # Enter virtual environment
+poetry run python run_backend.py  # Start server
+```
 
 Backend runs at: http://localhost:5050
 
-Configurable in config_settings.py
+All backend config is set in config_settings.py, which reads environment variables from .env.
 
 🧬 DB Initialization
 
-For now, each developer will set up their own local PostgreSQL database for development. Follow these steps:
+1. Open a Poetry shell in the backend:
 
-1. Ensure PostgreSQL is running locally
-    # If you're on macOS, within terminal:
-    brew services start postgresql
+   ```bash
+   poetry shell
+   ```
 
-2. Create the database (once):
-    createdb yeetoreat_db
+2. Run the following to create the database tables:
 
-3. Update your .env file (in backend/) with:
-    DATABASE_URL=postgresql://postgres:yourpassword@localhost/yeetoreat_db
-    SECRET_KEY=super-secret-dev-key
-    DEBUG=true
+   ```python
+   from app import app
+   from db_models import db
+   with app.app_context():
+       db.create_all()
+   ```
 
-4. Activate the virtual environment and run migrations:
-    cd backend
-    source venv/bin/activate  # (use venv\Scripts\activate on Windows)
-    flask db init             # Only once
-    flask db migrate -m "Initial migration"
-    flask db upgrade
+3. To drop and recreate tables:
 
-    This sets up the schema defined in db_models.py using Alembic.
-
-5. To reset the database (wipe and recreate all tables):
-    # In a Python shell with virtualenv active
-    from app import app, db
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
+   ```python
+   with app.app_context():
+       db.drop_all()
+       db.create_all()
+   ```
 
 🧪 Test Routes (Backend)
 
@@ -110,7 +146,9 @@ Don't commit .env or node_modules.
 
 Use npm run build before deploying frontend.
 
-Use virtualenv for backend to avoid dependency issues.
+Use Poetry to manage Python dependencies and virtual environments
+
+Optional: run `poetry export` to generate `requirements.txt` if needed for deployment
 
 🙌 Need Help?
 
