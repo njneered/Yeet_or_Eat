@@ -1,28 +1,59 @@
 print("app.py loaded")
 from flask import Flask, jsonify, request, session
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from config_settings import Config
 from db_models import User, db, Review
+import re
+from datetime import timedelta
 
 app = Flask(__name__)
 CORS(app)
 app.config.from_object(Config)
 
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
+
 db.init_app(app)
+jwt = JWTManager(app)
 
 @app.route('/login', methods=['POST'])
 def login():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
 
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
+        email = data.get('email', '').strip().lower()
+        password = data.get('password', '')
 
-    valid_user = User.query.filter_by(email=email).first()
-    if valid_user and valid_user.checkPassword(password):
-        session['user_id'] = valid_user.id
-        return jsonify({"message" : "Login successful!"}), 200
-    return jsonify({"message" : "Invalid credentials"}), 401
+        if not email or not password:
+            return jsonify({
+                'error': "Missing credentials",
+                'message' : 'Email and password required'
+            }), 400
 
+        valid_user = User.query.filter_by(email=email).first()
+
+        if not valid_user or not valid_user.checkPassword(password):
+            return jsonify({"message": "Invalid credentials"}), 401
+
+        access_token = create_access_token(identity=str(valid_user.id))
+
+        return jsonify({
+            "message" : 'Login Successful!',
+            "access_token" : access_token,
+            "user" : {
+                "id" : valid_user.id,
+                "username" : valid_user.username,
+                "email" : valid_user.email
+            }
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'error' : 'Login Failed',
+            'message' : str(e)
+        }), 500
 
 @app.route('/signup', methods = ['POST'])
 def signup():
@@ -51,13 +82,12 @@ def ping():
     return jsonify({"message": "pong"}), 200
 
 @app.route('/review', methods=['POST'])
+@jwt_required()
 def review():
+    user_id = get_jwt_identity()
     #Check user is logged
-    if 'user_id' not in session:
+    if not user_id:
         return jsonify({"message": "You need to log in to post a review! Thanks!"}), 401
-
-    # Get user_id
-    user_id = session['user_id']
 
     # Get the review parameters
     data = request.get_json()
@@ -66,11 +96,11 @@ def review():
     rating = data.get('rating')
     comment = data.get('comment')
 
-    if not restaurant or not dish or not rating:
+    if not restaurant or not dish or rating is None:
         return jsonify({"message" : "All fields are required!"}), 400
 
     if rating < 1 or rating > 5:
-        return jsonify({"message" : "Rating must be between 1 and 5!"})
+        return jsonify({"message" : "Rating must be between 1 and 5!"}), 400
 
     # Create the new review
     new_review = Review(
