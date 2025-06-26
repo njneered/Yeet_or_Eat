@@ -1,5 +1,5 @@
 print("app.py loaded")
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from config_settings import Config
@@ -16,6 +16,27 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
 
 db.init_app(app)
 jwt = JWTManager(app)
+
+
+def emailValidation(email):
+    characters = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(characters, email) is None
+
+def passwordValidation(password):
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long"
+    if not re.search(r'[A-Za-z]', password):
+        return False, "Password must contain at least one letter"
+    if not re.search(r'[0-9]', password):
+        return False, "Password must contain at least one number"
+    return True, "Valid Password"
+
+def usernameValidation(username):
+    if len(username) < 3 or len(username) > 20:
+        return False, "Username must be between 3-20 characters"
+    if not re.match(r'^[a-zA-Z0-9_]+$', username):
+        return False, "Username can only contain letters, numbers and underscore(_)"
+    return True, "Valid username"
 
 @app.route('/login', methods=['POST'])
 def login():
