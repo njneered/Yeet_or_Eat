@@ -20,7 +20,7 @@ jwt = JWTManager(app)
 
 def emailValidation(email):
     characters = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    return re.match(characters, email) is None
+    return re.match(characters, email) is not None
 
 def passwordValidation(password):
     if len(password) < 8:
@@ -59,7 +59,10 @@ def login():
         if not valid_user or not valid_user.checkPassword(password):
             return jsonify({"message": "Invalid credentials"}), 401
 
-        access_token = create_access_token(identity=str(valid_user.id))
+        access_token = create_access_token(identity=str(valid_user.id), additional_claims={
+            'username': valid_user.username,
+            'email': valid_user.email
+        })
 
         return jsonify({
             "message" : 'Login Successful!',
@@ -78,17 +81,40 @@ def login():
 
 @app.route('/signup', methods = ['POST'])
 def signup():
+    try:
         data = request.get_json()
-        email = data.get('email')
-        password = data.get('password')
-        username = data.get('username')
-        
-        # Would of put check in for empty fields but frontend seems to handle that
+        if not data:
+            return jsonify({'error': 'No data provided'}),400
 
-        # Check if the user already exists
-        existing_user = User.query.filter_by(email=email).first()
+        email = data.get('email','').strip().lower()
+        password = data.get('password','')
+        username = data.get('username','').strip()
+
+        # Check for missing data
+        if not email or not password or not username:
+            return jsonify({
+                'error': 'Missing required fields',
+                'message': 'Email, password, and username are required'
+            }), 400
+        #Validate email, password and username
+        if not (emailValidation(email)):
+            return jsonify({'error': 'Invalid email'}),400
+
+        validPassword, passwordMSG = passwordValidation(password)
+        if not validPassword:
+            return jsonify({'error': 'Invalid password', 'message': passwordMSG}),400
+
+        validUsername, usernameMSG = usernameValidation(username)
+        if not validUsername:
+            return jsonify({'error': 'Invalid username', 'message': usernameMSG}),400
+
+        existing_user = User.query.filter((User.email == email) | (User.username == username)).first()
+
         if existing_user:
-            return jsonify({"message": "Email already registered"}), 409
+            if existing_user.email == email:
+                return jsonify({'error': 'Email already in use'}), 409
+            else:
+                return jsonify({'error': 'Username already in use'}), 409
 
         # Create a new user
         new_user = User(username=username, email=email)
@@ -96,7 +122,18 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        return jsonify({"message": f"Account created for {username}!"}), 201
+        return jsonify({
+            'message': f'Account created for {username}!',
+            'user': {
+                'id': new_user.id,
+                'username': new_user.username,
+                'email': new_user.email
+            }
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error':'Registration process failed','message': str(e)}),500
 
 @app.route('/ping', methods=['GET'])
 def ping():
