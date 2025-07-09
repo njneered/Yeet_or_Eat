@@ -29,8 +29,6 @@ curl -sSL https://install.python-poetry.org | python3 -
 - If CERTIFICATE_VERIFY_FAILED
 ```bash
 /Applications/Python\ 3.12/Install\ Certificates.command
-```
-
 On Windows (PowerShell):
 ```powershell
 (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -
