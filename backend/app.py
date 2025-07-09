@@ -175,5 +175,59 @@ def review():
 
     return jsonify({"message": "Review added successfully! Thank you!"}), 201
 
+@app.route('/reviews', methods=['GET'])
+def getReviews():
+    try:
+        restaurantNameFilter = request.args.get('restaurant')
+
+        if restaurantNameFilter:
+            reviews = Review.query.filter_by(restaurant=restaurantNameFilter).order_by(Review.timestamp.desc()).all()
+
+        else:
+            reviews = Review.query.order_by(Review.timestamp.desc()).all()
+
+        result = []
+
+        for review in reviews:
+            result.append({
+                "id": review.id,
+                "restaurant": review.restaurant,
+                "dish": review.dish,
+                "rating": review.rating,
+                "comment": review.comment,
+                "timestamp": review.timestamp.isoformat(),
+                "user": {
+                    "id": review.user.id,
+                    "username": review.user.username,
+                    "email": review.user.email
+                }
+            })
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({"error": "Failed to load the reviews", "message": str(e)}), 500
+
+@app.route('/user-reviews', methods=['GET'])
+@jwt_required()
+def getUserReviews():
+    try:
+        user_id = get_jwt_identity()
+        reviews = Review.query.filter_by(user_id=user_id).order_by(Review.timestamp.desc()).all()
+        result = []
+
+        for review in reviews:
+            result.append({
+                "id": review.id,
+                "restaurant": review.restaurant,
+                "dish": review.dish,
+                "rating": review.rating,
+                "comment": review.comment,
+                "timestamp": review.timestamp.isoformat(),
+            })
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": "Failed to load user reviews", "message": str(e)}), 500
+
+
 if __name__ == "__main__":
     app.run(debug=True, port =5050)
