@@ -27,8 +27,8 @@ class User(db.Model):
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # Id of review (autoincrements)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)  # nullable set to false meaning cannot be left empty
-    restaurant = db.Column(db.String(30), nullable=False)  # char limit 30
-    dish = db.Column(db.String(30), nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)  # char limit 30
+    dish_id = db.Column(db.Integer, db.ForeignKey('dish.id'), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.String(300))  # char limit 300
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
@@ -46,6 +46,7 @@ class Dish(db.Model):
     name = db.Column(db.String(100), nullable=False)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)
     reviews = db.relationship('Review', backref='dish', lazy=True)               #backref so we can access dish<-->review
+
 
 
 
