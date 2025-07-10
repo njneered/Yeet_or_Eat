@@ -35,4 +35,17 @@ class Review(db.Model):
 
     user = db.relationship('User',backref='reviews')  # makes it so we can access reviews from a user and also user from reviews.
 
+class Restaurant(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    dishes = db.relationship('Dish', backref='restaurant', lazy=True)            #backref so we can access restauran<-->dish
+    reviews = db.relationship('Review', backref='restaurant', lazy=True)         #backref so we can access restaurant<-->review
+
+class Dish(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)
+    reviews = db.relationship('Review', backref='dish', lazy=True)               #backref so we can access dish<-->review
+
+
 
