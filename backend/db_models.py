@@ -21,20 +21,6 @@ class User(db.Model):
     def checkPassword(self, password):
         return check_password_hash(self.password_hash, password)
 
-# Review model: stores user-submitted reviews.
-# Fields include review ID, associated user, restaurant name, dish name, 1–5 rating, optional comment, and timestamp.
-# This structure can be expanded later to add more attributes or adjusted to fix bugs.
-class Review(db.Model):
-    id = db.Column(db.Integer, primary_key=True)  # Id of review (autoincrements)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)  # nullable set to false meaning cannot be left empty
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)  # char limit 30
-    dish_id = db.Column(db.Integer, db.ForeignKey('dish.id'), nullable=False)
-    rating = db.Column(db.Integer, nullable=False)
-    comment = db.Column(db.String(300))  # char limit 300
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
-    user = db.relationship('User',backref='reviews')  # makes it so we can access reviews from a user and also user from reviews.
-
 class Restaurant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
