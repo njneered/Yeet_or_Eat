@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from config_settings import Config
-from db_models import User, db, Review
+from db_models import User, db, Review, Restaurant, Dish
 import re
 from datetime import timedelta
 
@@ -143,37 +143,49 @@ def ping():
 @jwt_required()
 def review():
     user_id = get_jwt_identity()
-    #Check user is logged
     if not user_id:
-        return jsonify({"message": "You need to log in to post a review! Thanks!"}), 401
+        return jsonify({"message": "You need to log in to post a review!"}), 401
 
-    # Get the review parameters
     data = request.get_json()
-    restaurant = data.get('restaurant')
-    dish = data.get('dish')
+    restaurantName = data.get('restaurant')
+    dishName = data.get('dish')
     rating = data.get('rating')
     comment = data.get('comment')
 
-    if not restaurant or not dish or rating is None:
-        return jsonify({"message" : "All fields are required!"}), 400
+    if not restaurantName or not dishName or rating is None:
+        return jsonify({"message": "All fields are required!"}), 400
 
     if rating < 1 or rating > 5:
-        return jsonify({"message" : "Rating must be between 1 and 5!"}), 400
+        return jsonify({"message": "Rating must be between 1 and 5!"}), 400
 
-    # Create the new review
+    # 🔍 Find or create Restaurant
+    restaurant = Restaurant.query.filter_by(name=restaurantName).first()
+    if not restaurant:
+        restaurant = Restaurant(name=restaurantName)
+        db.session.add(restaurant)
+        db.session.commit()
+
+    # 🔍 Find or create Dish (must be linked to a restaurant)
+    dish = Dish.query.filter_by(name=dishName, restaurant_id=restaurant.id).first()
+    if not dish:
+        dish = Dish(name=dishName, restaurant_id=restaurant.id)
+        db.session.add(dish)
+        db.session.commit()
+
+    # ✅ Create Review using IDs
     new_review = Review(
         user_id=user_id,
-        restaurant=restaurant,
-        dish=dish,
+        restaurant_id=restaurant.id,
+        dish_id=dish.id,
         rating=rating,
         comment=comment
     )
 
-    # Add the review to the database
     db.session.add(new_review)
     db.session.commit()
 
-    return jsonify({"message": "Review added successfully! Thank you!"}), 201
+    return jsonify({"message": "Review added successfully!"}), 201
+
 
 @app.route('/reviews', methods=['GET'])
 def getReviews():
@@ -181,7 +193,7 @@ def getReviews():
         restaurantNameFilter = request.args.get('restaurant')
 
         if restaurantNameFilter:
-            reviews = Review.query.filter_by(restaurant=restaurantNameFilter).order_by(Review.timestamp.desc()).all()
+            reviews = Review.query.join(Restaurant).filter(Restaurant.name == restaurantNameFilter).order_by(Review.timestamp.desc()).all()
 
         else:
             reviews = Review.query.order_by(Review.timestamp.desc()).all()
@@ -191,8 +203,8 @@ def getReviews():
         for review in reviews:
             result.append({
                 "id": review.id,
-                "restaurant": review.restaurant,
-                "dish": review.dish,
+                "restaurant": review.restaurant.name,
+                "dish": review.dish.name,
                 "rating": review.rating,
                 "comment": review.comment,
                 "timestamp": review.timestamp.isoformat(),
@@ -218,8 +230,8 @@ def getUserReviews():
         for review in reviews:
             result.append({
                 "id": review.id,
-                "restaurant": review.restaurant,
-                "dish": review.dish,
+                "restaurant": review.restaurant.name,
+                "dish": review.dish.name,
                 "rating": review.rating,
                 "comment": review.comment,
                 "timestamp": review.timestamp.isoformat(),
