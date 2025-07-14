@@ -6,6 +6,7 @@ from config_settings import Config
 from db_models import User, db, Review, Restaurant, Dish
 import re
 from datetime import timedelta
+from supabase_token import verify_supabase_token
 
 app = Flask(__name__)
 CORS(app)
