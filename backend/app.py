@@ -240,6 +240,59 @@ def getUserReviews():
     except Exception as e:
         return jsonify({"error": "Failed to load user reviews", "message": str(e)}), 500
 
+@app.route('/review/<int:reviewID>', methods=['PUT'])
+@jwt_required()
+def editReview(reviewID):
+    try:
+        userID = get_jwt_identity()
+        review = Review.query.get(reviewID)
+
+        if not review:
+            return jsonify({"error": "Review not found!"}), 404
+
+        if review.user_id != int(userID):
+            return jsonify({"error": "Unauthorized"}), 403
+
+        data =request.get_json()
+
+        review.rating = data.get('rating', review.rating)
+        review.comment = data.get('comment', review.comment)
+
+        newDishName = data.get('dish')
+        if newDishName:
+            dish = Dish.query.filter_by(name=newDishName, restaurant_id=review.restaurant_id).first()
+            if not dish:
+                dish = Dish(name=newDishName, restaurant_id=review.restaurant_id)
+                db.session.add(dish)
+                db.session.commit()
+            review.dish_id = dish.id
+
+        db.session.commit()
+        return jsonify({"message": "Review updated successfully!"}), 200
+
+    except Exception as e:
+        return jsonify({'error': 'Failed to update review, try again', "message": str(e)}), 500
+
+@app.route('/review/<int:reviewID>', methods=['DELETE'])
+@jwt_required()
+def deleteReview(reviewID):
+    try:
+        userID = get_jwt_identity()
+        review = Review.query.get(reviewID)
+
+        if not review:
+            return jsonify({"error": "Review not found!"}), 404
+
+        if review.user_id != int(userID):
+            return jsonify({"error": "Unauthorized"}), 403
+
+        db.session.delete(review)
+        db.session.commit()
+
+        return jsonify({"message": "Review deleted successfully!"}), 200
+
+    except Exception as e:
+        return jsonify({'error': 'Failed to delete review', "message": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True, port =5050)
