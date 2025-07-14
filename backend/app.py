@@ -3,7 +3,6 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from config_settings import Config
-from db_models import User, db, Review, Restaurant, Dish
 import re
 from datetime import timedelta
 from supabase_token import verify_supabase_token
@@ -15,7 +14,6 @@ app.config.from_object(Config)
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
 
-db.init_app(app)
 jwt = JWTManager(app)
 
 
