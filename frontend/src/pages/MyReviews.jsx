@@ -49,14 +49,21 @@ const MyReviews = () => {
     fetchReviews();
   }, []);
 
-  const handleDelete = async (id) => {
-    const { error } = await supabase.from('reviews').delete().eq('id', id);
-    if (error) {
-      alert('Failed to delete review.');
-    } else {
-      setReviews(reviews.filter((review) => review.id !== id));
-    }
-  };
+const handleDelete = async (id) => {
+  console.log('Deleting review with id:', id);
+  const { error } = await supabase
+    .from('reviews')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Failed to delete review:', error);
+    console.error('Supabase delete error:', error.message, error.details);
+    alert('Failed to delete review.');
+  } else {
+    setReviews(reviews.filter((review) => review.id !== id));
+  }
+};
 
   const handleSaveEdit = async (id) => {
   const { error } = await supabase
