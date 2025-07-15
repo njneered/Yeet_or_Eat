@@ -8,6 +8,7 @@ const MyReviews = () => {
   // Local state to track reviews and the user ID
   const [reviews, setReviews] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const navigate = useNavigate();
 
   // Fetch the current user and their reviews when component mounts
@@ -20,10 +21,12 @@ const MyReviews = () => {
 
       if (userError || !user) {
         console.error('User fetch error:', userError);
+        setIsLoggedIn(false);
         return;
       }
 
       setUserId(user.id);
+      setIsLoggedIn(true);
 
       // Fetch reviews belonging to the user
       const { data, error } = await supabase
@@ -70,7 +73,9 @@ const MyReviews = () => {
       <Header />
       <div className="my-reviews">
         <h2>My Reviews</h2>
-        {reviews.length === 0 ? (
+        {!isLoggedIn ? (
+          <p>You need to be logged in to see your stored reviews.</p>
+        ) : reviews.length === 0 ? (
           <p>No reviews yet :(</p>
         ) : (
           reviews.map((review) => (
