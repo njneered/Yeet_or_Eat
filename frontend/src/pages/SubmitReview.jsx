@@ -40,7 +40,7 @@ const SubmitReview = () => {
         if (profileError) {
         console.error('Profile fetch error:', profileError);
         } else {
-        setUser({ ...user, username: profile.username });
+        setUser({ id: user.id, email: user.email, username: profile.username });
         }
     };
 
@@ -117,7 +117,7 @@ const SubmitReview = () => {
 
         const review = {
             user_id: user.id,
-            username: user.user_metadata?.username || 'Anonymous',
+            username: user.username || 'Anonymous',
             restaurant_id: mockRestaurant.id, // update this once restaurants are in Supabase}
             restaurant_name: mockRestaurant.name,
             rating: ratingType === 'yeet' ? -emojiRating : emojiRating,
