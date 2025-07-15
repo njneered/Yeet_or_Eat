@@ -18,7 +18,6 @@ yeet_or_eat/
 - Node.js + npm
 - Python 3.x
 - Poetry
-- PostgreSQL (optional, for DB work)
 
 ## Installing Poetry (one-time setup)
 On macOS / Linux:
@@ -84,7 +83,7 @@ REACT_APP_API_URL=http://localhost:5050
 ```bash
 cd backend
 poetry install                # Install dependencies
-poetry self add poetry-plugin-shell # Install Poetry shell plugin (One-time)
+poetry self add poetry-plugin-shell # Install Poetry shell plugin (One-time) // Only Once
 poetry shell                  # Enter virtual environment
 poetry run python run_backend.py  # Start server
 ```
@@ -93,30 +92,10 @@ Backend runs at: http://localhost:5050
 
 All backend config is set in config_settings.py, which reads environment variables from .env.
 
-🧬 DB Initialization
+💽 DATA BASE 
+Now hosted on Supabase
+https://supabase.com/dashboard/project/qsqoaolnqlbwlkfelkmb
 
-1. Open a Poetry shell in the backend:
-
-   ```bash
-   poetry shell
-   ```
-
-2. Run the following to create the database tables:
-
-   ```python
-   from app import app
-   from db_models import db
-   with app.app_context():
-       db.create_all()
-   ```
-
-3. To drop and recreate tables:
-
-   ```python
-   with app.app_context():
-       db.drop_all()
-       db.create_all()
-   ```
 
 🧪 Test Routes (Backend)
 

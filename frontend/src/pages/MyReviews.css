@@ -1,0 +1,82 @@
+.my-reviews {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  font-family: "Fredoka", sans-serif;
+  color: #333;
+}
+
+.my-reviews h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.review-card {
+  background-color: #fff8f8;
+  border: 2px solid #ffd6d6;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.review-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.badge {
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  font-family: "Fredoka", sans-serif;
+}
+
+.badge.eat {
+  background-color: #ffe9e6;
+  color: #f2443a;
+  border: 2px solid #f2443a;
+}
+
+.badge.yeet {
+  background-color: #e6f4ff;
+  color: #0077b6;
+  border: 2px solid #0077b6;
+}
+
+.review-text {
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.review-timestamp {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.delete-button {
+  background-color: #f2443a;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #d63031;
+  transform: scale(1.03);
+}
+

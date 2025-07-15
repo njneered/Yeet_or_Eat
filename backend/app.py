@@ -3,9 +3,9 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from config_settings import Config
-from db_models import User, db, Review, Restaurant, Dish
 import re
 from datetime import timedelta
+from supabase_token import verify_supabase_token
 
 app = Flask(__name__)
 CORS(app)
@@ -14,29 +14,8 @@ app.config.from_object(Config)
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
 
-db.init_app(app)
 jwt = JWTManager(app)
 
-
-def emailValidation(email):
-    characters = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    return re.match(characters, email) is not None
-
-def passwordValidation(password):
-    if len(password) < 8:
-        return False, "Password must be at least 8 characters long"
-    if not re.search(r'[A-Za-z]', password):
-        return False, "Password must contain at least one letter"
-    if not re.search(r'[0-9]', password):
-        return False, "Password must contain at least one number"
-    return True, "Valid Password"
-
-def usernameValidation(username):
-    if len(username) < 3 or len(username) > 20:
-        return False, "Username must be between 3-20 characters"
-    if not re.match(r'^[a-zA-Z0-9_]+$', username):
-        return False, "Username can only contain letters, numbers and underscore(_)"
-    return True, "Valid username"
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -139,44 +118,39 @@ def signup():
 def ping():
     return jsonify({"message": "pong"}), 200
 
-@app.route('/review', methods=['POST'])
-@jwt_required()
-def review():
-    user_id = get_jwt_identity()
-    if not user_id:
-        return jsonify({"message": "You need to log in to post a review!"}), 401
+from supabase_token import verify_supabase_token
 
+@app.route('/review', methods=['POST'])
+def review():
+    # Step 1: Extract token from Authorization header
+    auth_header = request.headers.get('Authorization', '')
+    token = auth_header.replace('Bearer ', '')
+
+    # Step 2: Verify token
+    payload = verify_supabase_token(token)
+    if not payload:
+        return jsonify({"message": "Invalid or missing token"}), 401
+
+    user_id = payload['sub']  # Supabase user ID (UUID)
+
+    # Step 3: Extract review data
     data = request.get_json()
-    restaurantName = data.get('restaurant')
-    dishName = data.get('dish')
+    restaurant = data.get('restaurant')
+    dish = data.get('dish')
     rating = data.get('rating')
     comment = data.get('comment')
 
-    if not restaurantName or not dishName or rating is None:
+    if not restaurant or not dish or rating is None:
         return jsonify({"message": "All fields are required!"}), 400
 
     if rating < 1 or rating > 5:
         return jsonify({"message": "Rating must be between 1 and 5!"}), 400
 
-    # 🔍 Find or create Restaurant
-    restaurant = Restaurant.query.filter_by(name=restaurantName).first()
-    if not restaurant:
-        restaurant = Restaurant(name=restaurantName)
-        db.session.add(restaurant)
-        db.session.commit()
-
-    # 🔍 Find or create Dish (must be linked to a restaurant)
-    dish = Dish.query.filter_by(name=dishName, restaurant_id=restaurant.id).first()
-    if not dish:
-        dish = Dish(name=dishName, restaurant_id=restaurant.id)
-        db.session.add(dish)
-        db.session.commit()
-
-    # ✅ Create Review using IDs
+    # Step 4: Create review
     new_review = Review(
         user_id=user_id,
-        restaurant_id=restaurant.id,
-        dish_id=dish.id,
+        restaurant=restaurant,
+        dish=dish,
         rating=rating,
         comment=comment
     )
