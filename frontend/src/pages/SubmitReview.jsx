@@ -1,27 +1,13 @@
 import React, {useState} from 'react';
 import './SubmitReview.css';
 import Header from '../components/Header';
+import supabase from '../supabaseClient';
+import { useEffect } from 'react';
 
 
+// FORM STATE BEFORE CONDITIONS
 const SubmitReview = () => {
-
-
-    // MOCK USER AND RESTAURANT DATA FOR TESTING
-    const mockUser = {
-        id: 1,
-        username: 'mock_nj',
-        email: 'mock@yeetoreat.com'
-    };
-
-
-    const mockRestaurant = {
-        id: 42,
-        name: 'Yeet Street Tacos',
-        location: 'Gainesville, FL'
-    };
-
-
-    // FORM STATE
+    const [user, setUser] = useState(null);
     const [activity, setActivity] = useState('');
     const [reviewText, setReviewText] = useState('');
     const [cuisine, setCuisine] = useState('');
@@ -29,9 +15,48 @@ const SubmitReview = () => {
     const [ratingType, setRatingType] = useState(null); // 'yeet' or 'eat'
     const [emojiRating, setEmojiRating] = useState(0); // 1-5
     const [selectedType, setSelectedType] = useState(null);
-
     const [tags, setTags] = useState([]);
     const [image, setImage] = useState(null);
+
+    useEffect(() => {
+    const fetchProfile = async () => {
+        const {
+        data: { user },
+        error: userError
+        } = await supabase.auth.getUser();
+
+        if (userError || !user) {
+        console.error('No user found:', userError);
+        return;
+        }
+
+        // Fetch username from profiles table
+        const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('id', user.id)
+        .single();
+
+        if (profileError) {
+        console.error('Profile fetch error:', profileError);
+        } else {
+        setUser({ ...user, username: profile.username });
+        }
+    };
+
+    fetchProfile();
+    }, []);
+
+
+    if (!user) { return <p>You must be logged in to submit a review.</p>; }
+
+
+    // MOCK RESTAURANT DATA FOR TESTING
+    const mockRestaurant = {
+        id: 42,
+        name: 'Yeet Street Tacos',
+        location: 'Gainesville, FL'
+    };
 
     const handleSelect = (type) => {
     setSelectedType(type);
@@ -68,25 +93,54 @@ const SubmitReview = () => {
     };
 
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{ // Scaling down for testing
         e.preventDefault();
-         const review = {
-            userId: mockUser.id,
-            username: mockUser.username,
-            restaurantId: mockRestaurant.id,
-            restaurantName: mockRestaurant.name,
+
+        /* OLD REVIEW OBJECT -- SAVING FOR LATER
+        const review = {
+            user_id: user.id,
+            username: user.user_metadata?.username || 'Anonymous',
+            restaurant_id: mockRestaurant.id, // update this once restaurants are in Supabase
+            restaurant_name: mockRestaurant.name,
+            dish_id: null,
             activity,
-            reviewText,
+            review_text: reviewText,
             cuisine,
             rating: ratingType === 'yeet' ? -emojiRating : emojiRating,
             privacy,
             tags,
             image,
-            submittedAt: new Date().toISOString()
+            submitted_at: new Date().toISOString(),
+            timestamp: new Date().toISOString()
+        };
+        */
+
+        const review = {
+            user_id: user.id,
+            username: user.user_metadata?.username || 'Anonymous',
+            restaurant_id: mockRestaurant.id, // update this once restaurants are in Supabase}
+            restaurant_name: mockRestaurant.name,
+            rating: ratingType === 'yeet' ? -emojiRating : emojiRating,
+            dish_id: null, // optional placeholder
+            review_text: reviewText,
+            timestamp: new Date().toISOString()
         };
 
-        console.log('Review Submitted:', review);
-        alert('Review submitted! Check console for mock data! Love, NJ <3');
+        // Log before Insert
+        console.log('Submitting review:', review);
+        // Insert review into Supabase
+        const { data, error } = await supabase.from('reviews').insert([review]);
+        // Error handling
+
+        if (error) {
+            console.error('❌ Supabase insert error:', error);
+            console.log('🧾 Full review payload:', review);
+            alert('Failed to submit review: ' + error.message);
+        } else {
+            alert('Review submitted!');
+        }
+        // reset form here
+        
 
         // FORM RESETS AFTER SUBMISSION
         setActivity('');
@@ -110,7 +164,8 @@ const SubmitReview = () => {
 
 
                 <h2>Submit a Review for {mockRestaurant.name}</h2>
-                <p className = "reviewer-info">Posting as <strong>@{mockUser.username}</strong></p>
+                <p className="reviewer-info"> Posting as <strong>@{user.username || 'Anonymous'}</strong> </p>
+
 
 
                 <form onSubmit={handleSubmit}>
