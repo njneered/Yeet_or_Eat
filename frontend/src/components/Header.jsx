@@ -4,9 +4,19 @@ import { FiMenu, FiX, FiSearch} from 'react-icons/fi';
 import { GiKnifeFork, GiPencil } from 'react-icons/gi';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import supabase from '../supabaseClient';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Header =() => {
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        navigate('/');
+    };
+    
     const [menuOpen, setMenuOpen] = useState(false);
     const [reviewDropdown, setReviewDropdown] = useState(false);
     const [tableDropdown, setTableDropdown] = useState(false);
@@ -111,6 +121,13 @@ const Header =() => {
                             {settingsDropdown && (
                                 <div className="submenu">
                                     <Link to="/profile-settings" className="submenu-link">Profile Settings</Link>
+                                          <div
+                                                className="submenu-link"
+                                                onClick={handleLogout}
+                                                style={{ cursor: 'pointer', color: '#f2443a' }}
+                                            >
+                                                🚪 Log Out
+                                            </div>
                                 </div>
                             )}
                         </div>       

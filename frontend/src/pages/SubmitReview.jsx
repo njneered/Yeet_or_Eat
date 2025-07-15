@@ -42,7 +42,7 @@ const SubmitReview = () => {
     loadUser();
   }, []);
 
-  if (!user) return <p>Loading...</p>;
+  if (!user) return <p>! Log in to post a review !</p>;
 
 
   // Insert new review into Supabase
