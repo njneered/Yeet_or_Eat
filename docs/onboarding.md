@@ -92,6 +92,10 @@ Backend runs at: http://localhost:5050
 
 All backend config is set in config_settings.py, which reads environment variables from .env.
 
+💽 DATA BASE 
+Now hosted on Supabase
+https://supabase.com/dashboard/project/qsqoaolnqlbwlkfelkmb
+
 
 🧪 Test Routes (Backend)
 
