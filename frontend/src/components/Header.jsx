@@ -29,11 +29,13 @@ const Header =() => {
         <>
 
             <header className="top-bar">
-                <img
-                src="/logo-red.png"
-                alt="Yeet or Eat Red Logo"
-                className="logo-in-bar"
-                />
+                <Link to="/feed">
+                    <img
+                    src="/logo-red.png"
+                    alt="Yeet or Eat Red Logo"
+                    className="logo-in-bar"
+                    />
+                </Link>    
 
 
                 <div className="icon-group">
