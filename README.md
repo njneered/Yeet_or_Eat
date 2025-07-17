@@ -14,16 +14,12 @@ A chaotic, meme-friendly review app where college students rate meals with the s
 |------------|-----------------------------|
 | Frontend   | React, JavaScript, HTML/CSS |
 | Backend    | Python, Flask               |
-| Database   | PostgreSQL (via backend)    |
+| Database   | Supabase                    |
 
 
 ## Getting Started
 
 ### Frontend Setup
-
-> React app reset and working as of June 16th.
-
-> Flask app reset and working as of June 16th.
 
 bash
 cd frontend
@@ -45,11 +41,12 @@ cd backend
 python -m venv venv
 
 #### Windows:
-venv\Scripts\activate
-#### macOS/Linux:
-source venv/bin/activate
 
-pip install -r requirements.txt
+venv\Scripts\activate
+
+#### macOS/Linux:
+
+source venv/bin/activate
 python run_backend.py
 
 > Make sure to add your .env file if required, or copy from .env.example
@@ -92,7 +89,7 @@ npm run eject (Eject Creat React App config)
 |------------|-----------------|
 | Dylan      | Fullstack       |
 | Gabriel    | Database        |
-| NJ         | Fullstack       |
+| NJ         | Frontend        |
 | Santiago   | Backend         |
 
 ## DEV NOTES
