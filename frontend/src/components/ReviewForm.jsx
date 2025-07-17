@@ -94,9 +94,25 @@ const ReviewForm = ({
       <select value={cuisine} onChange={(e) => setCuisine(e.target.value)}>
         <option value="">Cuisine</option>
         <option value="American">🇺🇸 American 🍔</option>
-        <option value="Mexican">🇲🇽 Mexican 🌮</option>
+        <option value="Brazilian">🇧🇷 Brazilian 🥩</option>
+        <option value="Caribbean">🏝️ Caribbean 🍤</option>
+        <option value="Chinese">🇨🇳 Chinese 🥡</option>
+        <option value="Ethiopian">🇪🇹 Ethiopian 🍛</option>
+        <option value="French">🇫🇷 French 🥖</option>
+        <option value="Greek">🇬🇷 Greek 🥙</option>
+        <option value="Indian">🇮🇳 Indian 🍛</option>
         <option value="Italian">🇮🇹 Italian 🍝</option>
-        {/* ! Add more options here ! */}
+        <option value="Jamaican">🇯🇲 Jamaican 🌶️</option>
+        <option value="Japanese">🇯🇵 Japanese 🍣</option>
+        <option value="Korean">🇰🇷 Korean 🍜</option>
+        <option value="Lebanese">🇱🇧 Lebanese 🧆</option>
+        <option value="Mediterranean">🌍 Mediterranean 🫒</option>
+        <option value="Mexican">🇲🇽 Mexican 🌮</option>
+        <option value="Middle Eastern">🌍 Middle Eastern 🍢</option>
+        <option value="Peruvian">🇵🇪 Peruvian 🥘</option>
+        <option value="Spanish">🇪🇸 Spanish 🥘</option>
+        <option value="Thai">🇹🇭 Thai 🍲</option>
+        <option value="Vietnamese">🇻🇳 Vietnamese 🍜</option>
       </select>
 
       <label>Who Can View?</label>
