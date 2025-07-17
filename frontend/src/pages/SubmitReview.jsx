@@ -25,7 +25,7 @@ const SubmitReview = () => {
     const [emojiRating, setEmojiRating] = useState(0);
     const [ratingType, setRatingType] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
-    const [image, setImage] = useState(null);
+    const [images, setImages] = useState([]);
     // Form Fields
 
   useEffect(() => {
@@ -105,8 +105,8 @@ const SubmitReview = () => {
           setRatingType={setRatingType}
           selectedType={selectedType}
           setSelectedType={setSelectedType}
-          image={image}
-          setImage={setImage}
+          images={images}
+          setImages={setImages}
           onSubmit={handleSubmit}
           mode="submit"
         />

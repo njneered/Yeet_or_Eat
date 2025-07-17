@@ -16,7 +16,7 @@ const ReviewForm = ({
   privacy, setPrivacy,
   tags = [], setTags,
   emojiRating, setEmojiRating,
-  image, setImage,
+  images, setImages,
   ratingType, setRatingType,
   selectedType, setSelectedType,
   onSubmit,
@@ -58,13 +58,10 @@ const ReviewForm = ({
 
   // Handles image upload
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(URL.createObjectURL(file));
-    }
+    const files = Array.from(e.target.files);
+    const previewUrls = files.map((file) => URL.createObjectURL(file));
+    setImages((prev) => [...prev, ...previewUrls]);
   };
-  // Handles image upload
-
 
 
   // Trigger parent submission with compiled review data
@@ -121,6 +118,33 @@ const ReviewForm = ({
         <option value="Everyone">🌍 Everyone</option>
         <option value="My Eyes Only">🙈 My Eyes Only</option>
       </select>
+
+      <div className="upload-section">
+        <input
+          id="imageInput"
+          type="file"
+          accept="image/*"
+          multiple
+          style={{ display: 'none' }}
+          onChange={handleImageUpload}
+        />
+
+
+        <div
+          className="upload-box"
+          onClick={() => document.getElementById('imageInput').click()}
+        >
+        {images.length > 0 ? (
+          images.map((src, idx) => (
+            <img key={idx} src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ))
+        ) : (
+          <p>+<br />Prove you actually ate here!</p>
+        )}
+        </div>
+      </div>
+
+
 
       <div className="tags">
         <label>Tags:</label>
