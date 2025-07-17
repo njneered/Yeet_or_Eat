@@ -3,16 +3,30 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from config_settings import Config
+from flask_migrate import Migrate
 import re
+import os
+from dotenv import load_dotenv
 from datetime import timedelta
 from supabase_token import verify_supabase_token
+from yelp_sync import fetch_yelp_data, save_businesses_to_db
+from extensions import db
 
+load_dotenv()
 app = Flask(__name__)
 CORS(app)
-app.config.from_object(Config)
 
+app.config.from_object(Config)
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+
+db.init_app(app)
+migrate = Migrate(app, db)
+from models import *
 
 jwt = JWTManager(app)
 
@@ -270,3 +284,15 @@ def deleteReview(reviewID):
 
 if __name__ == "__main__":
     app.run(debug=True, port =5050)
+    
+@app.route("/import-restaurants", methods=["POST"])
+def import_restaurants():
+    location = request.json.get("location", "Gainesville, FL")
+    term = request.json.get("term", "restaurants")
+    
+    try:
+        businesses = fetch_yelp_data(location=location, term=term, limit=10)
+        save_businesses_to_db(businesses)
+        return jsonify({"message": f"Successfully imported {len(businesses)} businesses"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
