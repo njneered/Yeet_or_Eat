@@ -45,7 +45,7 @@ const Header =() => {
                         <GiKnifeFork />
                     </Link>
 
-                    <Link to="/search" title="Search">
+                    <Link to="/profile" title="Profile">
                         <FiSearch />
                     </Link>
 

@@ -61,7 +61,7 @@ async function handleSubmit(event) {
                         <form onSubmit={handleSubmit}>
                             <input type="email" placeholder="Email" required />
                             <input type="password" placeholder="Password" required />
-                            {!isLoginMode && <input type="text" placeholder="Username" required />}
+                            {!isLoginMode && <input type="username" placeholder="Username" required />}
                             <button type="submit">{isLoginMode ? "Login" : "Create Account"}</button>
                         </form>
                         <p onClick={handleToggle} className="toggle-text">
