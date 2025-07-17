@@ -11,6 +11,8 @@ __pycache__/
 *.py[cod]
 *.so
 *.sqlite3
+*.pyc
+package-lock.json
 
 # Virtual env (If not using Poetry)
 backend/venv/
