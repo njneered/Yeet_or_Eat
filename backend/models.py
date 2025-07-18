@@ -14,12 +14,8 @@ class Restaurants(db.Model):
     rating = db.Column(db.Float)
     price = db.Column(db.String(10))  # $, $$, $$$
     image_url = db.Column(db.String(500))
-
-    # Optional: add timestamp
     created_at = db.Column(db.DateTime, server_default=db.func.now())
-
-    # Relationships
-    reviews = db.relationship("Review", backref="restaurant", lazy=True)  # assuming you have a Review model
+    reviews = db.relationship("Review", backref="restaurant", lazy=True)
 
     def __repr__(self):
         return f"<Restaurant {self.name}>"
