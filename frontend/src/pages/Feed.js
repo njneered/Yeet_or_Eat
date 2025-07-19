@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import Header from '../components/Header';
+
 
 export default function Feed() {
   useEffect(() => {
@@ -8,5 +10,10 @@ export default function Feed() {
       .catch((err) => console.error(" Ping failed:", err));
   }, []);
 
-  return <h2>User Feed</h2>;
+  return (
+    <>
+      <Header />
+      <h2>Welcome to your feed!</h2>
+    </>
+  );
 }

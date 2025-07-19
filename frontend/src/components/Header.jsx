@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Header.css';
-import { FiMenu, FiX, FiSearch} from 'react-icons/fi';
+import { FiMenu, FiX, FiUser} from 'react-icons/fi';
 import { GiKnifeFork, GiPencil } from 'react-icons/gi';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { Link } from 'react-router-dom';
@@ -48,7 +48,7 @@ const Header =() => {
                     </Link>
 
                     <Link to="/profile" title="Profile">
-                        <FiSearch />
+                        <FiUser />
                     </Link>
 
                     <FiMenu onClick={() => setMenuOpen(true)} className="hamburger" />

@@ -1,3 +1,11 @@
+import Header from '../components/Header';
+
+
 export default function Profile() {
-  return <h2>User Profile</h2>;
+    return (
+    <>
+      <Header />
+      <h2>Welcome to your profile!</h2>
+    </>
+  );
 }

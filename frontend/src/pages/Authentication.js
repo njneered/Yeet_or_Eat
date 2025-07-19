@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import Header from '../components/Header';
 import supabase from '../supabaseClient';
-
+import { useNavigate } from 'react-router-dom';
 import './Authentication.css';
 
 function Authentication(){
+  const navigate = useNavigate();
     // keeps track of whether the user is logging in/signing up
     const [isLoginMode, setIsLoginMode] = useState(true);
 
@@ -26,6 +27,7 @@ async function handleSubmit(event) {
     if (error) return alert('Login failed: ' + error.message);
     alert('Login successful!');
     console.log('User:', data.user);
+    navigate('/feed'); // takes user to feed page immediately after logging in
   } else {
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) return alert('Signup failed: ' + error.message);
@@ -39,6 +41,7 @@ async function handleSubmit(event) {
       ]);
     }
     
+    navigate('/feed'); // takes user to feed page immediately after signing up
   }
 }
 

@@ -42,7 +42,19 @@ const SubmitReview = () => {
     loadUser();
   }, []);
 
-  if (!user) return <p>! Log in to post a review !</p>;
+  if (!user) return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      textAlign: 'center'
+    }}>
+      <h1>Bro did you log in? 🤨</h1>
+      <p>Press the back button to get it together.</p>
+    </div>
+  );
 
 
   // Insert new review into Supabase
@@ -73,7 +85,7 @@ const SubmitReview = () => {
         const { error } = await supabase.from('reviews').insert([review]);
 
         if (error) {
-            alert('Failed to submit review');
+            alert('Something went wrong dawg. Failed to submit review');
             console.error(error);
         } else {
             alert('Review submitted!');

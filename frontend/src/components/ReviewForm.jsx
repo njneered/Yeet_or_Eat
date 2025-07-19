@@ -85,7 +85,7 @@ const ReviewForm = ({
       <input type="text" placeholder="Describe this meal in 7 words or less..." value={activity} onChange={(e) => setActivity(e.target.value)} />
 
       <label>Description</label>
-      <textarea placeholder = "How was the food? Share more about your meal and use @ to tag someone." value={reviewText} onChange={(e) => setReviewText(e.target.value)} />
+      <textarea placeholder = "How was the food? Describe this meal's feels, and use @ to tag someone." value={reviewText} onChange={(e) => setReviewText(e.target.value)} />
 
       <label>Cuisine</label>
       <select value={cuisine} onChange={(e) => setCuisine(e.target.value)}>
