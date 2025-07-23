@@ -30,7 +30,7 @@ const Profile = () => {
 
       setProfile(profileData);
       setReviews(userReviews || []); // fallback to empty array bc it keeps crashing
-      // it just ensures that if userReviews is null, it becomes [] to prevent .map() from crashing
+      // it just ensures that if userReviews is null, it becomes [] to prevent .map() from crashing 👍🏻
     };
 
     fetchProfileAndReviews();
@@ -54,6 +54,9 @@ const handleFileChange = async (e) => {
   const fileName = `${profile.id}.${fileExt}`;
   const filePath = fileName; 
 
+  console.log("Uploading file to:", filePath);
+  console.log("Profile ID being used:", profile?.id);
+
   // upload to supabase storage
   const { data: uploadData, error: uploadError } = await supabase.storage
     .from('avatars')
@@ -66,15 +69,20 @@ const handleFileChange = async (e) => {
   console.log("Upload successful:", uploadData)
 
   // get public url
-  const { data } = supabase.storage
+  const { data: urlData, error: urlError } = supabase.storage
     .from('avatars')
     .getPublicUrl(filePath);
 
-  const publicUrl = data.publicUrl;
-  console.log("Public URL:", publicUrl);
+  if (urlError) {
+    console.error('Failed to get public URL:', urlError.message);
+    return;
+  }
+
+  const publicUrl = urlData.publicUrl;
+  console.log("Public URL generated:", publicUrl);
 
   // update avatar to profiles table
-  const { error: updateError } = await supabase
+  const { error: updateError,} = await supabase
     .from('profiles')
     .update({ avatar_url: publicUrl })
     .eq('id', profile.id);
@@ -83,7 +91,10 @@ const handleFileChange = async (e) => {
     console.error('Profile update failed:', updateError.message);
     return;
   }
+
+  console.log("Updating avatar for user ID:", profile.id);
   console.log("Profile updated with new avatar URL");
+
 
   // changes reflect in ui
   setProfile(prev => ({ ...prev, avatar_url: publicUrl }));
