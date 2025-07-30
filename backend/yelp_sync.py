@@ -20,6 +20,7 @@ def fetch_yelp_data(location="Gainesville, FL", term="restaurants", limit=20):
 def save_businesses_to_db(businesses):
     for biz in businesses:
         if not Restaurants.query.filter_by(yelp_id=biz["id"]).first():
+            categories = [cat["title"] for cat in biz.get("categories", [])]
             new_restaurant = Restaurants(
                 yelp_id = biz["id"],
                 name = biz["name"],
@@ -27,6 +28,12 @@ def save_businesses_to_db(businesses):
                 rating = biz.get("rating"),
                 price = biz.get("price"),
                 image_url = biz.get("image_url"),
+                phone = biz.get("display_phone"),
+                category_tags = ", ".join(categories),
+                latitude = biz["coordinates"]["latitude"],
+                longitude = biz["coordinates"]["longitude"],
+                yelp_url = biz.get("url"),
+                review_count = biz.get("review_count")
             )
             db.session.add(new_restaurant)
     db.session.commit()

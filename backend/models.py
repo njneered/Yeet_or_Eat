@@ -14,7 +14,14 @@ class Restaurants(db.Model):
     rating = db.Column(db.Float)
     price = db.Column(db.String(10))  # $, $$, $$$
     image_url = db.Column(db.String(500))
+    phone = db.Column(db.String(20))
+    category_tags = db.Column(db.String(255))
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    yelp_url = db.Column(db.String(500))
+    review_count = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
+
     reviews = db.relationship("Review", backref="restaurant", lazy=True)
 
     def __repr__(self):
