@@ -20,6 +20,7 @@ class Restaurants(db.Model):
     longitude = db.Column(db.Float)
     yelp_url = db.Column(db.String(500))
     review_count = db.Column(db.Integer)
+    last_synced = db.Column(db.DateTime, default=datetime.utcnow) # Track last sync time
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     reviews = db.relationship("Review", backref="restaurant", lazy=True)
