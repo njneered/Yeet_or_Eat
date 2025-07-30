@@ -7,9 +7,9 @@ import ReviewForm from '../components/ReviewForm';
     // Placeholder until restaurant linking is dynamic
     // MOCK RESTAURANT DATA FOR TESTING
     const mockRestaurant = {
-        id: 42,
-        name: 'Yeet Street Tacos',
-        location: 'Gainesville, FL'
+        id: 1,
+        name: 'The Top',
+        address: '30 N Main St, Gainesville, FL 32601, FL'
     };
 
 const SubmitReview = () => {
