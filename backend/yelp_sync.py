@@ -13,7 +13,7 @@ BASE_URL = "https://api.yelp.com/v3/businesses/search"
 
 def fetch_yelp_data(location="Gainesville, FL", term="restaurants", limit=240):
     all_businesses = []
-    page_limit = 50  # Yelp max per request
+    page_limit = 50 
 
     for offset in range(0, min(limit, 240), page_limit):
         params = {
@@ -28,7 +28,7 @@ def fetch_yelp_data(location="Gainesville, FL", term="restaurants", limit=240):
 
         businesses = response.json().get("businesses", [])
         if not businesses:
-            break  # Stop if no more results
+            break  
         all_businesses.extend(businesses)
 
     return all_businesses
