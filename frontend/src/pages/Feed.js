@@ -1,19 +1,42 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from '../components/Header';
+import supabase from '../supabaseClient';
+import './Feed.css';
 
 
-export default function Feed() {
+const Feed =() => {
+  const [reviews, setReviews] = useState([]);
+
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/ping`)
-      .then((res) => res.json())
-      .then((data) => console.log("Backend says:", data.message))
-      .catch((err) => console.error(" Ping failed:", err));
+    const fetchReviews = async () => {
+      const { data, error} = await supabase
+      .from('reviews')
+      .select('*')
+      .order('timestamp', {ascending: false});
+
+      if (!error) setReviews(data);
+      else console.error(error);
+    };
+
+    fetchReviews();
   }, []);
 
   return (
     <>
       <Header />
-      <h2>Welcome to your feed!</h2>
+      <div className="feed-container">
+        <h2>Welcome to Your Feed!</h2>
+          {reviews.map((review) => (
+            <div key={review.id} className="review-card">
+              <h3>{review.restaurant_name}</h3>
+              <p><strong>@{review.username}</strong></p>
+              <p>{review.review_text}</p>
+              <p className="timestamp">{new Date(review.timestamp).toLocaleString()}</p>
+            </div>
+          ))}
+      </div>    
     </>
   );
-}
+};
+
+export default Feed;

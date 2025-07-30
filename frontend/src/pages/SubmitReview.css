@@ -1,9 +1,23 @@
+.submit-review-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #fff;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+
 .submit-review{
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 2rem;
-    font-family: "Fredoka", sans-serif;
-    color: #333;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+  font-family: "Fredoka", sans-serif;
+  color: #333;
 }
 
 .submit-review h2{
@@ -18,17 +32,22 @@
 }
 
 input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="username"],
 textarea,
 select{
-    width: 100%;
-    padding: 0.8rem 1rem;
-    margin: 0.5rem 0 1.5rem;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-sizing: border-box;
-    background-color: #fafafa;
-    font-family: "Fredoka", sans-serif;
+  width: 100%;
+  max-width: 100%;
+  padding: 0.8rem 1rem;
+  margin: 0.5rem 0 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-sizing: border-box;
+  background-color: #fafafa;
+  font-family: "Fredoka", sans-serif;
+
 
 }
 

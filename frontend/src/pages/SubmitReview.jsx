@@ -97,32 +97,34 @@ const SubmitReview = () => {
   return (
     <>
       <Header />
-      <div className="submit-review">
-        <h2>Submit a Review for {mockRestaurant.name} </h2>
-        <p className="reviewer-info">Posting as <strong>@{user.username}</strong></p>
-        <ReviewForm
-          activity={activity}
-          setActivity={setActivity}
-          reviewText={reviewText}
-          setReviewText={setReviewText}
-          cuisine={cuisine}
-          setCuisine={setCuisine}
-          privacy={privacy}
-          setPrivacy={setPrivacy}
-          tags={tags}
-          setTags={setTags}
-          emojiRating={emojiRating}
-          setEmojiRating={setEmojiRating}
-          ratingType={ratingType}
-          setRatingType={setRatingType}
-          selectedType={selectedType}
-          setSelectedType={setSelectedType}
-          images={images}
-          setImages={setImages}
-          onSubmit={handleSubmit}
-          mode="submit"
-        />
-      </div>
+      <div className= "submit-review-container">
+        <div className="submit-review">
+          <h2>Submit a Review for {mockRestaurant.name} </h2>
+          <p className="reviewer-info">Posting as <strong>@{user.username}</strong></p>
+          <ReviewForm
+            activity={activity}
+            setActivity={setActivity}
+            reviewText={reviewText}
+            setReviewText={setReviewText}
+            cuisine={cuisine}
+            setCuisine={setCuisine}
+            privacy={privacy}
+            setPrivacy={setPrivacy}
+            tags={tags}
+            setTags={setTags}
+            emojiRating={emojiRating}
+            setEmojiRating={setEmojiRating}
+            ratingType={ratingType}
+            setRatingType={setRatingType}
+            selectedType={selectedType}
+            setSelectedType={setSelectedType}
+            images={images}
+            setImages={setImages}
+            onSubmit={handleSubmit}
+            mode="submit"
+          />
+        </div>
+      </div>  
     </>
   );
   // Render the form
