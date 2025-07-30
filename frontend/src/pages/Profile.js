@@ -1,13 +1,14 @@
 import Header from '../components/Header';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '../supabaseClient';
-import { useRef } from 'react';
 import './Profile.css';
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [showTop10, setShowTop10] = useState(false);
+  const [showBoards, setShowBoards] = useState(false);
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
@@ -166,12 +167,26 @@ const handleFileChange = async (e) => {
           ))}
         </div>
 
-        {/*Placeholders for upcoming feautres*/}
+        {/* Dropdowns */}
         <div className="profile-widgets">
-          <div className="top-10-list">🔥 Top 10 List (coming soon)</div>
-          <div className="charcuterie-boards">🧀 Charcuterie Boards (coming soon)</div>
-        </div>
+          <div className="dropdown-box" onClick={() => setShowTop10(!showTop10)}>
+             Top 10 List {showTop10 ? '▲' : '▼'}
+          </div>
+          {showTop10 && (
+            <div className="dropdown-content">
+              <p>Their top 10.</p>
+            </div>
+          )}
 
+          <div className="dropdown-box" onClick={() => setShowBoards(!showBoards)}>
+             Charcuterie Boards {showBoards ? '▲' : '▼'}
+          </div>
+          {showBoards && (
+            <div className="dropdown-content">
+              <p>Clubs that the they've joined.</p>
+            </div>
+          )}
+        </div>
       </div>
     </>  
   );

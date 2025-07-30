@@ -102,15 +102,47 @@
     margin-top: 2rem;
 }
 
-.top-10-list,
-.charcuterie-boards{
+.dropdown-box{
     background-color: #fff9f2;
     border: 1px dashed #f2443a;
-    padding: 1rem;
-    border-radius: 10px;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    border-radius: 12px;
     font-weight: bold;
     color: #2b2a2a;
     text-align: center;
+    transition: all 0.3s ease
+}
+
+.dropdown-box:hover{
+    background-color: #ffe5e5;
+    color: #000;
+    transform: scale(1.02);
+    border-color: #f2443a;
+    box-shadow: 0 0 10px rgba(244, 67, 54, 0.6);
+
+}
+
+.dropdown-content{
+    background-color: #fff0f0;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 6px rgba(244, 67, 54, 0.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .avatar-circle{
