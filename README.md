@@ -88,7 +88,6 @@ npm run eject (Eject Creat React App config)
 | Team       | Responsibilities|
 |------------|-----------------|
 | Dylan      | Fullstack       |
-| Gabriel    | Database        |
 | NJ         | Frontend        |
 | Santiago   | Backend         |
 
