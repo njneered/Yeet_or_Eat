@@ -28,13 +28,11 @@ async function handleSubmit(event) {
   if (isLoginMode) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return alert('Login failed: ' + error.message);
-    alert('Login successful!');
     console.log('User:', data.user);
     navigate('/feed'); // takes user to feed page immediately after logging in
   } else {
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) return alert('Signup failed: ' + error.message);
-    alert('Signup successful!');
     console.log('Signed up user:', data.user);
 
     // Optionally insert into 'profiles' table here
@@ -65,19 +63,22 @@ async function handleSubmit(event) {
                     <div className = "auth-box"> 
                         <h2>{isLoginMode ? "LET ME IIIIIIIN 😩" : "new phone who dis?"}</h2>
                         <form onSubmit={handleSubmit}>
-                            <input type="email" placeholder="Email" required onInput={() => {
-                                                                                              typingSound.currentTime = 0;
-                                                                                              typingSound.play();
-                                                                                            }}/>
-                            <input type="password" placeholder="Password" required onInput={() => {
-                                                                                              typingSound.currentTime = 0;
-                                                                                              typingSound.play();
-                                                                                            }}/>
-                            {!isLoginMode && <input type="username" placeholder="Username" required onInput={() => {
-                                                                                              typingSound.currentTime = 0;
-                                                                                              typingSound.play();
-                                                                                            }}/>}
-                            <button type="submit" onClick={() => typingSound.play()}>{isLoginMode ? "Login" : "Create Account"}</button>
+                            <input type="email" placeholder="Email" required />
+                            <input type="password" placeholder="Password" required />
+                            {!isLoginMode && <input type="username" placeholder="Username" required />}
+                            <button
+                              type="submit"
+                              onClick={(e) => {
+                                e.preventDefault(); // prevent immediate submission
+                                typingSound.currentTime = 0;
+                                typingSound.play();
+                                setTimeout(() => {
+                                  e.target.form.requestSubmit(); // manually trigger form submission
+                                }, 300); // adjust delay to let sound play (300ms is a good sweet spot)
+                              }}
+                            >
+                              {isLoginMode ? "Login" : "Create Account"}
+                            </button>
                         </form>
                         <p onClick={handleToggle} className="toggle-text">
                             {isLoginMode

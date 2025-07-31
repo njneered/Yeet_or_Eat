@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import '../pages/SubmitReview.css';
 
+const submitReviewButton = new Audio('/vine-boom.mp3');
+submitReviewButton.volume = 0.5;
+
 //  Suggested tags for user to select
 const tagOptions = ['🔥 Hot', 'Gluten-Free', '🤑 Dirt Cheap',
   '🌹 Romantic', '🆒 Trendy', 'Vegan', 'Vegetarian',
@@ -194,7 +197,11 @@ const ReviewForm = ({
         </div>
       )}
 
-      <button type="submit" className="submit-button">
+      <button type="submit" className="submit-button" onClick={(e) => { e.preventDefault(); submitReviewButton.currentTime =0; submitReviewButton.play();
+              setTimeout(() => {
+                e.target.form.requestSubmit();
+              }, 300);
+      }}>
         {mode === 'edit' ? '💾 Save Changes' : '🍽️ Submit Review'}
       </button>
     </form>
