@@ -8,6 +8,8 @@ import supabase from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 
 
+const clickReviewSount = new Audio('/Mayonnaise.mp3');
+clickReviewSount.volume = 0.5;
 
 const Header =() => {
     const navigate = useNavigate();

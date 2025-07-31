@@ -48,6 +48,7 @@ class Review(db.Model):
     timestamp = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
 
     restaurant_name = db.Column(db.Text)
+    restaurant_location = db.Column(db.Text)
     username = db.Column(db.Text)
     activity = db.Column(db.Text)
     cuisine = db.Column(db.Text)
