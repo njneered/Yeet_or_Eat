@@ -84,6 +84,8 @@ npm run eject (Eject Creat React App config)
 
 ## TEAM
 
+Hello! We are Snack Overflow Studios (S.O.S)!
+This project was developed for CEN3031 - Software Engineering at the University of Florida.
 
 | Team       | Responsibilities|
 |------------|-----------------|
