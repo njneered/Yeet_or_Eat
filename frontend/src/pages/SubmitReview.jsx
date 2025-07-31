@@ -3,18 +3,17 @@ import Header from '../components/Header';
 import supabase from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import ReviewForm from '../components/ReviewForm';
+import SearchForRestaurant from '../components/SearchForRestaurant';
+import './SubmitReview.css';
 
-    // Placeholder until restaurant linking is dynamic
-    // MOCK RESTAURANT DATA FOR TESTING
-    const mockRestaurant = {
-        id: 1,
-        name: 'The Top',
-        address: '30 N Main St, Gainesville, FL 32601, FL'
-    };
 
 const SubmitReview = () => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+
+    // restaurant state
+    const [restaurantSelected, setRestaurantSelected] = useState(false);
+    const [selectedRestaurant, setSelectedRestaurant] = useState(null);
 
     // Form Fields
     const [activity, setActivity] = useState('');
@@ -26,8 +25,8 @@ const SubmitReview = () => {
     const [ratingType, setRatingType] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
     const [images, setImages] = useState([]);
-    // Form Fields
 
+  // loading user from supabase
   useEffect(() => {
     const loadUser = async () => {
       const { data: { user }, error } = await supabase.auth.getUser();
@@ -42,19 +41,15 @@ const SubmitReview = () => {
     loadUser();
   }, []);
 
-  if (!user) return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      textAlign: 'center'
-    }}>
-      <h1>Bro did you log in? 🤨</h1>
-      <p>Press the back button to get it together.</p>
-    </div>
-  );
+  // if user is not logged in
+  if (!user) {
+    return (
+      <div className="unauth-container">
+        <h1>Bro did you log in? 🤨</h1>
+        <p>Press the back button to get it together.</p>
+      </div>
+    );
+  }
 
 
   // Insert new review into Supabase
@@ -75,10 +70,11 @@ const SubmitReview = () => {
 
         const review = {
             ...partialReview,
-            user_id: user.id, // ✅ Required by Supabase RLS
+            user_id: user.id, 
             username: user.username, // Optional but nice
-            restaurant_id: mockRestaurant.id,
-            restaurant_name: mockRestaurant.name,
+            restaurant_id: selectedRestaurant.id,
+            restaurant_name: selectedRestaurant.name,
+            restaurant_location: selectedRestaurant.location?.address1 || '',
             timestamp: new Date().toISOString()
         };
 
@@ -93,14 +89,43 @@ const SubmitReview = () => {
         }
     };
 
-    // Render the form
+  // Render the form
   return (
     <>
       <Header />
-      <div className= "submit-review-container">
-        <div className="submit-review">
-          <h2>Submit a Review for {mockRestaurant.name} </h2>
-          <p className="reviewer-info">Posting as <strong>@{user.username}</strong></p>
+
+      {/* Overlay shown until restaurant is selected */}
+      {!restaurantSelected && (
+        <>
+          <p className="reviewer-info">
+            <strong>@{user.username}</strong>
+          </p>
+        <div className="overlay-center">
+          <SearchForRestaurant
+            onRestaurantSelect={(restaurant) => {
+              setSelectedRestaurant(restaurant);
+              setRestaurantSelected(true);
+            }}
+          />
+        </div>
+        </>
+      )}
+
+      {/* Review form - blurred if no restaurant selected */}
+      <div className="submit-review-container">
+        <div className={`submit-review ${!restaurantSelected ? 'blurred' : ''}`}>
+          <p className="reviewer-info">
+            <strong>@{user.username}</strong>
+          </p>
+          {selectedRestaurant && (
+            <div className="restaurant-info">
+              <h2>Submit a Review for {selectedRestaurant.name}</h2>
+              <p> At {selectedRestaurant.address || `${selectedRestaurant.location?.street}, ${selectedRestaurant.location?.city}`}
+              </p>
+            </div>
+          )}
+
+
           <ReviewForm
             activity={activity}
             setActivity={setActivity}
@@ -124,10 +149,10 @@ const SubmitReview = () => {
             mode="submit"
           />
         </div>
-      </div>  
+      </div>
+
     </>
   );
-  // Render the form
 };
 
 export default SubmitReview;
