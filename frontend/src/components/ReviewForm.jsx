@@ -19,14 +19,13 @@ const ReviewForm = ({
   privacy, setPrivacy,
   tags = [], setTags,
   emojiRating, setEmojiRating,
-  images, setImages,
   ratingType, setRatingType,
   selectedType, setSelectedType,
   onSubmit,
   mode = 'submit',
 }) => {
 // Allows this to work in both submit/edit modes
-
+const [images, setImages] = useState([]);
   // One-time population of edit values
   useEffect(() => {
     if (mode === 'edit') {
