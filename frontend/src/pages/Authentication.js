@@ -4,6 +4,9 @@ import supabase from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import './Authentication.css';
 
+const typingSound = new Audio('/vine-boom.mp3');
+typingSound.volume = 0.5;
+
 function Authentication(){
   const navigate = useNavigate();
     // keeps track of whether the user is logging in/signing up
@@ -62,10 +65,19 @@ async function handleSubmit(event) {
                     <div className = "auth-box"> 
                         <h2>{isLoginMode ? "LET ME IIIIIIIN 😩" : "new phone who dis?"}</h2>
                         <form onSubmit={handleSubmit}>
-                            <input type="email" placeholder="Email" required />
-                            <input type="password" placeholder="Password" required />
-                            {!isLoginMode && <input type="username" placeholder="Username" required />}
-                            <button type="submit">{isLoginMode ? "Login" : "Create Account"}</button>
+                            <input type="email" placeholder="Email" required onInput={() => {
+                                                                                              typingSound.currentTime = 0;
+                                                                                              typingSound.play();
+                                                                                            }}/>
+                            <input type="password" placeholder="Password" required onInput={() => {
+                                                                                              typingSound.currentTime = 0;
+                                                                                              typingSound.play();
+                                                                                            }}/>
+                            {!isLoginMode && <input type="username" placeholder="Username" required onInput={() => {
+                                                                                              typingSound.currentTime = 0;
+                                                                                              typingSound.play();
+                                                                                            }}/>}
+                            <button type="submit" onClick={() => typingSound.play()}>{isLoginMode ? "Login" : "Create Account"}</button>
                         </form>
                         <p onClick={handleToggle} className="toggle-text">
                             {isLoginMode
