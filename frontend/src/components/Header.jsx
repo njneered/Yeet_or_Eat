@@ -8,8 +8,9 @@ import supabase from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 
 
-const clickReviewSount = new Audio('/Mayonnaise.mp3');
-clickReviewSount.volume = 0.5;
+const clickSound = new Audio('./Mayonnaise.mp3');
+clickSound.volume = 0.5;
+
 
 const Header =() => {
     const navigate = useNavigate();
@@ -18,12 +19,29 @@ const Header =() => {
         await supabase.auth.signOut();
         navigate('/');
     };
+
     
+    
+
     const [menuOpen, setMenuOpen] = useState(false);
     const [reviewDropdown, setReviewDropdown] = useState(false);
     const [tableDropdown, setTableDropdown] = useState(false);
     const [settingsDropdown, setSettingsDropdown] = useState(false);
 
+    const ProfileLink = () => {
+    const audio = clickSound;
+
+    const handleClick = () => {
+      audio.play().catch(err => {
+        console.error("Audio play failed:", err);
+      });
+    };
+        return (
+      <Link to="/profile" title="Profile" onClick={handleClick}>
+        <FiUser />
+      </Link>
+    );
+    };
 
     return(
 
@@ -49,9 +67,7 @@ const Header =() => {
                         <GiKnifeFork />
                     </Link>
 
-                    <Link to="/profile" title="Profile">
-                        <FiUser />
-                    </Link>
+                    <ProfileLink />
 
                     <FiMenu onClick={() => setMenuOpen(true)} className="hamburger" />
                 </div>
