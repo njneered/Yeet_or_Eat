@@ -27,7 +27,7 @@ const Profile = () => {
       .from('reviews')
       .select('*')
       .eq('user_id', user.user.id)
-      .order('created_at', { ascending: false});
+      .order('timestamp', { ascending: false});
 
       setProfile(profileData);
       setReviews(userReviews || []); // fallback to empty array bc it keeps crashing
