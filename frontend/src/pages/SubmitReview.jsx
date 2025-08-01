@@ -74,7 +74,7 @@ const SubmitReview = () => {
             username: user.username, // Optional but nice
             restaurant_id: selectedRestaurant.id,
             restaurant_name: selectedRestaurant.name,
-            restaurant_location: selectedRestaurant.location?.address1 || '',
+            restaurant_address: selectedRestaurant?.address || '',
             timestamp: new Date().toISOString()
         };
 
