@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '../supabaseClient';
 import './Profile.css';
+import ReviewCard from '../components/ReviewCard';
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -12,30 +13,69 @@ const Profile = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-  useEffect(() => {
-    const fetchProfileAndReviews = async () => {
-      const {data: user, error: userError } = await supabase.auth.getUser();
-      if (userError || !user) return;
+useEffect(() => {
+  const fetchProfileAndReviews = async () => {
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
 
-      const { data: profileData } = await supabase
+    if (userError || !user) {
+      console.error("User fetch error:", userError);
+      return;
+    }
+
+    // Fetch profile info
+    const { data: profileData, error: profileError } = await supabase
       .from('profiles')
       .select('*')
-      .eq('id', user.user.id)
+      .eq('id', user.id)
       .single();
 
-      const { data: userReviews } = await supabase
+    if (profileError) {
+      console.error("Profile fetch error:", profileError);
+      return;
+    }
+
+    setProfile(profileData);
+
+    // Fetch their reviews
+    const { data: rawReviews, error: reviewsError } = await supabase
       .from('reviews')
       .select('*')
-      .eq('user_id', user.user.id)
-      .order('timestamp', { ascending: false});
+      .eq('user_id', user.id)
+      .order('timestamp', { ascending: false });
 
-      setProfile(profileData);
-      setReviews(userReviews || []); // fallback to empty array bc it keeps crashing
-      // it just ensures that if userReviews is null, it becomes [] to prevent .map() from crashing 👍🏻
-    };
+    if (reviewsError) {
+      console.error("Review fetch error:", reviewsError.message);
+      return;
+    }
 
-    fetchProfileAndReviews();
-  }, []);
+    // Attach profile picture URL to each review
+    const reviewsWithPics = rawReviews.map((review) => {
+      if (review.profile_picture) {
+        const { data: publicData } = supabase
+          .storage
+          .from('avatars')
+          .getPublicUrl(review.profile_picture);
+
+        return {
+          ...review,
+          profile_picture_url: publicData?.publicUrl || '/logo-red.png'
+        };
+      } else {
+        return {
+          ...review,
+          profile_picture_url: '/logo-red.png'
+        };
+      }
+    });
+
+    setReviews(reviewsWithPics);
+  };
+
+  fetchProfileAndReviews();
+}, []);
 
 
   const handleAvatarClick = () => {
@@ -153,17 +193,7 @@ const handleFileChange = async (e) => {
         <div className="profile-reviews">
           <h3>Recent Reviews</h3>
           {reviews.map((review) => (
-            <div key={review.id} className="review-card">
-              <p>{review.review_text}</p>
-              {review.image_urls?.length > 0 && (
-                <img
-                  src={review.image_urls[0]}
-                  alt="activity"
-                  className="review-img"
-                  onClick={() => navigate(`/review/${review.id}`)}
-                />
-              )}
-            </div>  
+            <ReviewCard key={review.id} review={review} />
           ))}
         </div>
 

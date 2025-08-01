@@ -122,9 +122,9 @@ const Header =() => {
 
                             {tableDropdown && (
                             <div className="submenu">
-                                <Link to="/tryna-eat" className="submenu-link">I'm Tryna Eat</Link>
-                                <Link to="/boutta-eat" className="submenu-link">I'm Bout to Eat</Link>
-                                <Link to="/ate" className="submenu-link">I Already Ate</Link>
+                                <Link to="/wanna-eat" className="submenu-link">Wanna Eat</Link>
+                                <Link to="/gonna-eat" className="submenu-link">Gonna Eat</Link>
+                                <Link to="/already-ate" className="submenu-link">Already Ate</Link>
                             </div>
                             )}
                         </div>
@@ -140,13 +140,13 @@ const Header =() => {
                             </div>
                             {settingsDropdown && (
                                 <div className="submenu">
-                                    <Link to="/profile-settings" className="submenu-link">Profile Settings</Link>
+                                    <Link to="/profile-settings" className="submenu-link">Edit Profile</Link>
                                           <div
                                                 className="submenu-link"
                                                 onClick={handleLogout}
-                                                style={{ cursor: 'pointer', color: '#f2443a' }}
+                                                style={{ cursor: 'pointer', color: '#ffff' }}
                                             >
-                                                🚪 Log Out
+                                                Log Out
                                             </div>
                                 </div>
                             )}

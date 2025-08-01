@@ -2,20 +2,35 @@ import React, { useEffect, useState } from "react";
 import Header from '../components/Header';
 import supabase from '../supabaseClient';
 import './Feed.css';
+import ReviewCard from "../components/ReviewCard";
 
-
-const Feed =() => {
+const Feed = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const fetchReviews = async () => {
-      const { data, error} = await supabase
-      .from('reviews')
-      .select('*')
-      .order('timestamp', {ascending: false});
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .order('timestamp', { ascending: false });
 
-      if (!error) setReviews(data);
-      else console.error(error);
+      if (error) {
+        console.error(error);
+      } else {
+        const reviewsWithPics = data.map((review) => {
+          const { data: publicData } = supabase
+            .storage
+            .from('avatars')
+            .getPublicUrl(review.profile_picture);
+
+          return {
+            ...review,
+            profile_picture_url: publicData?.publicUrl || '/logo-red.png'
+          };
+        });
+
+        setReviews(reviewsWithPics);
+      }
     };
 
     fetchReviews();
@@ -26,15 +41,14 @@ const Feed =() => {
       <Header />
       <div className="feed-container">
         <h2>Welcome to Your Feed!</h2>
-          {reviews.map((review) => (
-            <div key={review.id} className="review-card">
-              <h3>{review.restaurant_name}</h3>
-              <p><strong>@{review.username}</strong></p>
-              <p>{review.review_text}</p>
-              <p className="timestamp">{new Date(review.timestamp).toLocaleString()}</p>
-            </div>
-          ))}
-      </div>    
+        {reviews.map((review) => (
+          <ReviewCard
+            key={review.id}
+            review={review}
+            // No edit/delete in feed, so don’t pass onDelete/onEdit
+          />
+        ))}
+      </div>
     </>
   );
 };

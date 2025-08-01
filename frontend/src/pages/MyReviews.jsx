@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import supabase from '../supabaseClient';
 import './MyReviews.css';
 import Header from '../components/Header';
+import ReviewCard from '../components/ReviewCard';
 
 const MyReviews = () => {
   // Local state to track reviews and the user ID
@@ -38,7 +39,26 @@ const MyReviews = () => {
       if (error) {
         console.error('Review fetch error:', error.message);
       } else {
-        setReviews(data);
+        const reviewsWithPics = data.map((review) => {
+          if (review.profile_picture) {
+            const { data: publicData } = supabase
+              .storage
+              .from('avatars')
+              .getPublicUrl(review.profile_picture);
+
+            return {
+              ...review,
+              profile_picture_url: publicData?.publicUrl || '/logo-red.png'
+            };
+          } else {
+            return {
+              ...review,
+              profile_picture_url: '/logo-red.png'
+            };
+          }
+        });
+
+        setReviews(reviewsWithPics);
       }
     };
 
@@ -59,13 +79,13 @@ const MyReviews = () => {
       setReviews(reviews.filter((r) => r.id !== id));
     }
   };
-  // Handle review deletion
 
   //  Redirect to edit review page
   const handleEdit = (review) => {
     navigate(`/edit/${review.id}`);
   };
-  //  Redirect to edit review page
+
+
 
   // Render the reviews
   return (
@@ -76,35 +96,20 @@ const MyReviews = () => {
         {!isLoggedIn ? (
           <p>You need to be logged in to see your stored reviews.</p>
         ) : reviews.length === 0 ? (
-          <p>No reviews yet :(</p>
+          <p>No reviews yet</p>
         ) : (
           reviews.map((review) => (
-            <div key={review.id} className="review-card">
-              <h3>{review.restaurant_name}</h3>
-              <div className="emoji-spectrum">
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <span
-                    key={value}
-                    className={`emoji-option ${
-                      value <= Math.abs(review.rating) ? 'selected' : ''
-                    }`}
-                  >
-                    {review.rating > 0 ? '🔥' : '🤢'}
-                  </span>
-                ))}
-              </div>
-              <p>{review.review_text}</p>
-              <div className="review-actions">
-              <button className="action-button" onClick={() => handleDelete(review.id)}> 🗑 Delete </button>
-              <button className="action-button" onClick={() => handleEdit(review)}> ✏️ Edit Review </button>
-              </div>
-            </div>
+            <ReviewCard
+              key={review.id}
+              review={review}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+            />
           ))
         )}
       </div>
     </>
   );
-  // Render the reviews
 };
 
 export default MyReviews;
