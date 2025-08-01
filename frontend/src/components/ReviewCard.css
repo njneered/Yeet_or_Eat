@@ -1,0 +1,144 @@
+.review-card {
+  background-color: #fff8f8;
+  border: 2px dashed #ffd6d6;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  font-family: "Fredoka", sans-serif;
+  color: #333;
+  position: relative;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f2443a;
+  box-shadow: 0 0 5px rgba(242, 68, 58, 0.4);
+  margin-top: -60px;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  color: #f2443a;
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+
+.review-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 0.5rem;
+}
+
+.timestamp {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.2rem;
+}
+
+.restaurant-name {
+  font-weight: 500;
+  font-size: 1rem;
+  margin-top: 0.3rem;
+  color: #333;
+
+
+}
+
+/* Privacy badge */
+.privacy-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: white;
+  white-space: nowrap;
+
+}
+
+
+.privacy-badge.friends,
+.privacy-badge.public,
+.privacy-badge.private {
+  background-color: #888;
+  font-style: italic;
+
+
+}
+
+/* Rating emojis and review */
+.review-text-content {
+  margin-left: 70px;
+  margin-top: 0.5rem;
+}
+
+.emoji-spectrum {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.emoji-option {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+/* Review body */
+.review-text {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+}
+
+/* Action buttons (edit/delete) */
+.review-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.action-button {
+  background-color: #f2443a;
+  color: white;
+  border: 2px solid transparent;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  font-family: "Fredoka", sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-button:hover {
+  background: white;
+  color: #f2443a;
+  border-color: #f2443a;
+  transform: scale(1.03);
+}

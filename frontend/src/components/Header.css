@@ -132,6 +132,7 @@
 }
 
 .menu-link:hover,
+.submenu-link:hover,
 .submenu a:hover{
     text-decoration: underline;
 }

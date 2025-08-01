@@ -27,6 +27,7 @@
   padding: 2rem;
   position: relative;
   z-index: 1;
+
 }
 
 
@@ -38,6 +39,7 @@
   box-sizing: border-box;
   font-family: "Fredoka", sans-serif;
   color: #333;
+
 }
 
 .submit-review h2{

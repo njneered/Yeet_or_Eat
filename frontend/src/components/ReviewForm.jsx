@@ -91,7 +91,7 @@ const [images, setImages] = useState([]);
 
       <label>Cuisine</label>
       <select value={cuisine} onChange={(e) => setCuisine(e.target.value)}>
-        <option value="">Cuisine</option>
+        <option value="">What race was your food? 🌎 </option>
         <option value="American">🇺🇸 American 🍔</option>
         <option value="Brazilian">🇧🇷 Brazilian 🥩</option>
         <option value="Caribbean">🏝️ Caribbean 🍤</option>
