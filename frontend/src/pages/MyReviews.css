@@ -95,67 +95,6 @@
   margin-bottom: 1rem;
 }
 
-.review-meta{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-  margin: 6px 0 10px;
-  color: #555;
-}
-
-.timestamp{
-  font-style: italic;
-}
-
-
-
-.privacy-badge{
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: white;
-}
-
-.privacy-badge.public{
-  background-color: #f2443a;
-}
-
-.privacy-badge.friends{
-  background-color:#888;
-}
-
-.privacy-badge.private{
-  background-color:#888;
-  color: #f0f0f0;
-  font-style: italic;
-}
-
-.emoji-spectrum{
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-}
-
-.emoji-option{
-  font-size: 1.4rem;
-  line-height: 1;
-}
-
-.restaurant-name{
-  font-weight: 500;
-  font-size: 1rem;
-  margin-top: 0.2rem;
-  color: #333;
-}
-
-.review-text-content{
-  margin-left: 63px;
-  padding-top: 0.2rem;
-}
-
 /* Shared button styles */
 .action-button {
   background-color: #f2443a;

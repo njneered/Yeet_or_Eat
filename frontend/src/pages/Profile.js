@@ -43,13 +43,36 @@ useEffect(() => {
     const { data: rawReviews, error: reviewsError } = await supabase
       .from('reviews')
       .select('*')
-      .eq('user_id', user.user.id)
-      .order('timestamp', { ascending: false});
+      .eq('user_id', user.id)
+      .order('timestamp', { ascending: false });
 
-      setProfile(profileData);
-      setReviews(userReviews || []); // fallback to empty array bc it keeps crashing
-      // it just ensures that if userReviews is null, it becomes [] to prevent .map() from crashing 👍🏻
-    };
+    if (reviewsError) {
+      console.error("Review fetch error:", reviewsError.message);
+      return;
+    }
+
+    // Attach profile picture URL to each review
+    const reviewsWithPics = rawReviews.map((review) => {
+      if (review.profile_picture) {
+        const { data: publicData } = supabase
+          .storage
+          .from('avatars')
+          .getPublicUrl(review.profile_picture);
+
+        return {
+          ...review,
+          profile_picture_url: publicData?.publicUrl
+        };
+      } else {
+        return {
+          ...review,
+          profile_picture_url: '/logo-red.png'
+        };
+      }
+    });
+
+    setReviews(reviewsWithPics);
+  };
 
   fetchProfileAndReviews();
 }, []);

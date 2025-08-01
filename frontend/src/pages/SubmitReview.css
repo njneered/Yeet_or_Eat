@@ -217,6 +217,7 @@ textarea{
 
 .emoji-option:hover {
   transform: scale(1.2);
+  
 }
 
 
@@ -265,8 +266,11 @@ textarea{
     cursor: pointer;
     transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     font-family: "Fredoka", sans-serif;
+    
 
 }
+
+
 
 .submit-button:hover {
     background: white;

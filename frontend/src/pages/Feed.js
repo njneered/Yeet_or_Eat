@@ -9,6 +9,7 @@ const Feed = () => {
 
   useEffect(() => {
     const fetchReviews = async () => {
+
       const { data, error } = await supabase
         .from('reviews')
           .select(`
@@ -56,6 +57,23 @@ const Feed = () => {
 
         setReviews(reviewsWithPics);
       }
+      if (error) {
+        console.error(error);
+      } else {
+        const reviewsWithPics = data.map((review) => {
+          const { data: publicData } = supabase
+            .storage
+            .from('avatars')
+            .getPublicUrl(review.profile_picture);
+
+          return {
+            ...review,
+            profile_picture_url: publicData?.publicUrl || '/logo-red.png'
+          };
+        });
+
+        setReviews(reviewsWithPics);
+      }
     };
 
     fetchReviews();
@@ -65,12 +83,11 @@ const Feed = () => {
     <>
       <Header />
       <div className="feed-container">
-        <h2>Welcome to Your Feed!</h2>
+        <h2>My Feed</h2>
         {reviews.map((review) => (
           <ReviewCard
             key={review.id}
             review={review}
-            // No edit/delete in feed, so don’t pass onDelete/onEdit
           />
         ))}
       </div>

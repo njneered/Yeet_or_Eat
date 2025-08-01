@@ -13,9 +13,9 @@
 
 
 .search-container{
-    background-color: #f2f2f2;
-    border: 1px solid #aaa;
-    border-radius: 1rem;
+  background-color: #fff8f8;
+  border: 2px dashed #ffd6d6;
+  border-radius: 15px;
     padding: 1.5rem;
     width: 90%;
     max-width: 600px;
@@ -23,30 +23,18 @@
     text-align: left;
 }
 
+
+
 .search-container h2{
-    color: #777;
+    color: #1f1c1c;
     font-size: 1.4rem;
     margin-bottom: 1rem;
     margin-top: 0.3rem;
     font-weight: 600;
     font-family: 'Fredoka', sans-serif;
+    
 }
 
-.search-row{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    background: transparent;
-    border-radius: 2rem;
-    padding: 0.4rem 1rem;
-    overflow: hidden;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-
-}
 
 .search-input{
     flex: 1;
@@ -61,6 +49,7 @@
     text-align: left;
     margin-right: 0.5rem;
     width: 100%;
+    
 }
 
 .clear-button{
@@ -71,8 +60,9 @@
     color: #f2443a;
     margin-left: -3rem;
     margin-right: 0.5rem;
-    margin-top: 0rem;
+    margin-top: -0.4rem;
     z-index: 1;
+    
 }
 
 .clear-button:hover{
@@ -117,6 +107,7 @@
     margin: 0 auto;
     padding: 0.5rem;
     border-radius: 2rem;
+    
 
 }
 
@@ -136,13 +127,16 @@
     font-family: 'Fredoka', sans-serif;
     padding: 0.8rem 1.2rem;
 
+    
+
 }
 
 .write-button:hover{
     background: white;
     color: #f2443a;
-    border: 2px solid #f2443a;
+    border: 2px dashed #f2443a;
     transform: scale(1.03);
+    background-color: #fff8f8;
     
 }
 
