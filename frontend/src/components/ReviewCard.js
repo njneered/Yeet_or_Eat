@@ -19,7 +19,7 @@ const ReviewCard = ({ review, onDelete, onEdit }) => {
         <div className="user-info">
           <img
             src={review.profile_picture_url}
-            alt={`${review.username}'s avatar`}
+            alt={`${review.profile?.username || 'User'}'s avatar`}
             className="avatar"
             onError={(e) => {
               e.target.onerror = null;
