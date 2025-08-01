@@ -25,7 +25,9 @@ const ReviewForm = ({
   mode = 'submit',
 }) => {
 // Allows this to work in both submit/edit modes
+
 const [images, setImages] = useState([]);
+
   // One-time population of edit values
   useEffect(() => {
     if (mode === 'edit') {

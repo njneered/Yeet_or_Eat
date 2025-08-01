@@ -46,9 +46,9 @@ class Review(db.Model):
     rating = db.Column(db.Integer)
     review_text = db.Column(db.Text)
     timestamp = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
-
+    review_images = db.Column(ARRAY(db.Text))
     restaurant_name = db.Column(db.Text)
-    restaurant_location = db.Column(db.Text)
+    restaurant_address = db.Column(db.Text)
     username = db.Column(db.Text)
     activity = db.Column(db.Text)
     cuisine = db.Column(db.Text)
