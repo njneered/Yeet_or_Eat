@@ -32,30 +32,47 @@ const MyReviews = () => {
       // Fetch reviews belonging to the user
       const { data, error } = await supabase
         .from('reviews')
-        .select('*')
+          .select(`
+          *,
+          profile:profiles!user_id (
+            avatar_url,
+            username
+          )
+        `)
         .eq('user_id', user.id)
         .order('timestamp', { ascending: false });
 
       if (error) {
         console.error('Review fetch error:', error.message);
+
       } else {
-        const reviewsWithPics = data.map((review) => {
-          if (review.profile_picture) {
-            const { data: publicData } = supabase
+       const reviewsWithPics = data.map((review) => {
+          const filePath = review.profile?.avatar_url;
+          let profile_picture_url = '/logo-red.png';
+          console.log("Checking avatar path for user:", review.profile?.username, filePath, profile_picture_url);
+
+
+          if (filePath && !filePath.startsWith('http')) {
+            // Only get public URL if it's not already a full URL
+            const { data: publicData, error: urlError } = supabase
               .storage
               .from('avatars')
-              .getPublicUrl(review.profile_picture);
+              .getPublicUrl(filePath);
 
-            return {
-              ...review,
-              profile_picture_url: publicData?.publicUrl || '/logo-red.png'
-            };
-          } else {
-            return {
-              ...review,
-              profile_picture_url: '/logo-red.png'
-            };
+            if (urlError) {
+              console.error("Error fetching public avatar URL:", urlError);
+            } else {
+              profile_picture_url = publicData?.publicUrl;
+            }
+          } else if (filePath && filePath.startsWith('http')) {
+            // Already a full URL, just use it
+            profile_picture_url = filePath;
           }
+
+          return {
+            ...review,
+            profile_picture_url
+          };
         });
 
         setReviews(reviewsWithPics);
