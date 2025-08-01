@@ -43,46 +43,13 @@ useEffect(() => {
     const { data: rawReviews, error: reviewsError } = await supabase
       .from('reviews')
       .select('*')
-      .eq('user_id', user.id)
-      .order('timestamp', { ascending: false });
+      .eq('user_id', user.user.id)
+      .order('timestamp', { ascending: false});
 
-    if (reviewsError) {
-      console.error("Review fetch error:", reviewsError.message);
-      return;
-    }
-
-    // Attach profile picture URL to each review
-       const reviewsWithPics = rawReviews.map((review) => {
-          const filePath = profileData.avatar_url;
-          let profile_picture_url = '/logo-red.png';
-          console.log("Checking avatar path for user:", profile?.username, filePath, profile_picture_url);
-
-
-          if (filePath && !filePath.startsWith('http')) {
-            // Only get public URL if it's not already a full URL
-            const { data: publicData, error: urlError } = supabase
-              .storage
-              .from('avatars')
-              .getPublicUrl(filePath);
-
-            if (urlError) {
-              console.error("Error fetching public avatar URL:", urlError);
-            } else {
-              profile_picture_url = publicData?.publicUrl;
-            }
-          } else if (filePath && filePath.startsWith('http')) {
-            // Already a full URL, just use it
-            profile_picture_url = filePath;
-          }
-
-          return {
-            ...review,
-            profile_picture_url
-          };
-        });
-
-    setReviews(reviewsWithPics);
-  };
+      setProfile(profileData);
+      setReviews(userReviews || []); // fallback to empty array bc it keeps crashing
+      // it just ensures that if userReviews is null, it becomes [] to prevent .map() from crashing 👍🏻
+    };
 
   fetchProfileAndReviews();
 }, []);
