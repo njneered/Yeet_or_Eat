@@ -31,9 +31,12 @@ class Restaurants(db.Model):
 class Profile(db.Model):
     __tablename__ = 'profiles'
 
-    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    username = db.Column(db.String(), unique=True)
-    email = db.Column(db.String(), unique=True)
+    id = db.Column(UUID(as_uuid=True), primary_key=True)
+    username = db.Column(db.String(), nullable=False, unique=True, index=True)
+    email = db.Column(db.String(), nullable=False, unique=True)
+    avatar_url = db.Column(db.Text)
+    created_at = db.Column(db.DateTime(timezone=True))
+
     reviews = db.relationship("Review", backref="profile", lazy=True)
     
 class Review(db.Model):
