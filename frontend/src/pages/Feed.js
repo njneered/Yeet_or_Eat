@@ -65,7 +65,7 @@ const Feed = () => {
     <>
       <Header />
       <div className="feed-container">
-        <h2>Welcome to Your Feed!</h2>
+        <h2>My Feed</h2>
         {reviews.map((review) => (
           <ReviewCard
             key={review.id}

@@ -1,9 +1,9 @@
 .review-card {
-  background-color: #fff8f8;
+  background-color: #c0c0c0;
   border: 2px dashed #ffd6d6;
   border-radius: 15px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   font-family: "Fredoka", sans-serif;
   color: #333;
@@ -83,7 +83,7 @@
 .privacy-badge.friends,
 .privacy-badge.public,
 .privacy-badge.private {
-  background-color: #888;
+  background-color: hsl(0, 80%, 75%);
   font-style: italic;
 
 

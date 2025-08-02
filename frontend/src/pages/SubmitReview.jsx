@@ -98,7 +98,6 @@ const SubmitReview = () => {
       {!restaurantSelected && (
         <>
           <p className="reviewer-info">
-            <strong>@{user.username}</strong>
           </p>
         <div className="overlay-center">
           <SearchForRestaurant
