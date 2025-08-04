@@ -68,7 +68,26 @@ const ReviewCard = ({ review, onDelete, onEdit }) => {
         <p>{review.review_text}</p>
       </div>
 
-      <div className="review-actions">
+        {review.tags && review.tags.length > 0 && (
+          <div className="tag-container" style={{ marginTop: '0.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            {review.tags.map((tag, index) => (
+              <span
+                key={index}
+                style={{
+                  background: '#f1f1f1',
+                  padding: '0.3rem 0.6rem',
+                  borderRadius: '1rem',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div className="review-actions">
         {onDelete && (
           <button className="action-button" onClick={handleDelete}>
             Delete
