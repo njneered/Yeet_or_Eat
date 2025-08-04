@@ -9,34 +9,63 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadAdminContent = async () => {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      if (error || !user) {
-        alert('Not logged in');
-        return;
-      }
+  const loadAdminContent = async () => {
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error || !user) {
+      alert('Not logged in');
+      return;
+    }
 
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single();
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
 
-      if (profileError || !profile || profile.role !== 'admin') {
-        alert("You are not authorized to view this page.");
-        return;
-      }
+    if (profileError || !profile || profile.role !== 'admin') {
+      alert("You are not authorized to view this page.");
+      return;
+    }
 
-      setIsAdmin(true);
+    setIsAdmin(true);
 
-      const { data: allReviews, error: reviewError } = await supabase
-        .from('reviews')
-        .select(`*, profile:profiles!user_id(username, avatar_url)`)
-        .order('timestamp', { ascending: false });
+    const { data: allReviews, error: reviewError } = await supabase
+      .from('reviews')
+      .select(`*, profile:profiles!user_id(username, avatar_url)`)
+      .order('timestamp', { ascending: false });
 
-      if (!reviewError) setReviews(allReviews);
-      setLoading(false);
-    };
+    if (!reviewError) {
+      const reviewsWithAvatars = await Promise.all(
+        allReviews.map(async (review) => {
+          let profile_picture_url = '/logo-red.png'; // fallback
+
+          const avatarPath = review.profile?.avatar_url;
+          if (avatarPath) {
+            if (avatarPath.startsWith('http')) {
+              profile_picture_url = avatarPath;
+            } else {
+              const { data: avatarData, error: avatarError } = supabase
+                .storage
+                .from('avatars')
+                .getPublicUrl(avatarPath);
+              if (!avatarError && avatarData?.publicUrl) {
+                profile_picture_url = avatarData.publicUrl;
+              }
+            }
+          }
+
+          return {
+            ...review,
+            profile_picture_url,
+          };
+        })
+      );
+
+      setReviews(reviewsWithAvatars);
+    }
+
+    setLoading(false); // Don't forget this!
+  };
 
     loadAdminContent();
   }, []);
