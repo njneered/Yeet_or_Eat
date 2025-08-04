@@ -67,7 +67,45 @@ const SubmitReview = () => {
             return;
         }
 
+        const uploadedImageUrls = [];
+        // Upload images to Supabase storage
+        for (let i = 0; i < images.length; i++) {
+          const file = images[i].file;
 
+          console.log("Uploading file:", file.name, file);
+          if (!file) {
+            console.error("Missing file for image at index", i, images[i]);
+            continue;
+          }
+
+          const filePath = `${user.id}/${Date.now()}-${file.name}`;
+
+          const { error: uploadError, data: uploadData } = await supabase.storage
+          .from('review-images')
+          .upload(filePath, file);
+
+          console.log("Upload result:", uploadData, uploadError);
+          if (uploadError) {
+            console.error("Upload failed:", uploadError);
+            continue;
+        }
+
+          // Get public Url
+          const { data: publicData, error: urlError } = await supabase
+            .storage
+            .from('review-images')
+            .getPublicUrl(filePath);
+
+          if (urlError) {
+            console.error("URL fetch failed:", urlError);
+            continue;
+          }
+
+          uploadedImageUrls.push(publicData.publicUrl);
+        }
+        // Upload images to Supabase storage
+
+        // Create the review object
         const review = {
             ...partialReview,
             user_id: user.id, 
@@ -75,8 +113,10 @@ const SubmitReview = () => {
             restaurant_id: selectedRestaurant.id,
             restaurant_name: selectedRestaurant.name,
             restaurant_address: selectedRestaurant?.address || '',
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            review_images: uploadedImageUrls
         };
+        // Create the review object
 
         const { error } = await supabase.from('reviews').insert([review]);
 

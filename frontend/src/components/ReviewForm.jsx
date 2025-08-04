@@ -21,12 +21,11 @@ const ReviewForm = ({
   emojiRating, setEmojiRating,
   ratingType, setRatingType,
   selectedType, setSelectedType,
+  images, setImages,
   onSubmit,
   mode = 'submit',
 }) => {
 // Allows this to work in both submit/edit modes
-
-const [images, setImages] = useState([]);
 
   // One-time population of edit values
   useEffect(() => {
@@ -63,8 +62,13 @@ const [images, setImages] = useState([]);
   // Handles image upload
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    const previewUrls = files.map((file) => URL.createObjectURL(file));
-    setImages((prev) => [...prev, ...previewUrls]);
+
+    const imageObjects = files.map((file) => ({
+      file,
+      previewUrl: URL.createObjectURL(file),
+    }));
+
+    setImages((prev) => [...prev, ...imageObjects]);
   };
 
 
@@ -82,9 +86,11 @@ const [images, setImages] = useState([]);
     onSubmit(compiled);
   };
 
+  console.log("Images for preview:", images);
   // Render the form
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+     onSubmit={handleSubmit}>
       <label>Add Activity</label>
       <input type="text" placeholder="Describe this meal in 7 words or less..." value={activity} onChange={(e) => setActivity(e.target.value)} />
 
@@ -124,6 +130,7 @@ const [images, setImages] = useState([]);
       </select>
 
       <div className="upload-section">
+        {/* Hidden file input */}
         <input
           id="imageInput"
           type="file"
@@ -133,20 +140,34 @@ const [images, setImages] = useState([]);
           onChange={handleImageUpload}
         />
 
-
+        {/* Clickable upload box */}
         <div
           className="upload-box"
           onClick={() => document.getElementById('imageInput').click()}
         >
-        {images.length > 0 ? (
-          images.map((src, idx) => (
-            <img key={idx} src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          ))
-        ) : (
-          <p>+<br />Prove you actually ate here!</p>
-        )}
+          {images.length > 0 ? (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {images.map((img, idx) => (
+                <div key={idx} style={{ flex: '0 1 30%', maxWidth: '30%' }}>
+                  <img
+                    src={img.previewUrl}
+                    alt={`preview-${idx}`}
+                    style={{
+                      width: '100%',
+                      height: '150px',
+                      objectFit: 'cover',
+                      borderRadius: '8px'
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p style={{ textAlign: 'center' }}>+<br />Prove you actually ate here!</p>
+          )}
         </div>
       </div>
+
 
 
 
@@ -198,11 +219,14 @@ const [images, setImages] = useState([]);
         </div>
       )}
 
-      <button type="submit" className="submit-button" onClick={(e) => { e.preventDefault(); submitReviewButton.currentTime =0; submitReviewButton.play();
-              setTimeout(() => {
-                e.target.form.requestSubmit();
-              }, 300);
-      }}>
+      <button
+        type="submit"
+        className="submit-button"
+        onClick={(e) => {
+          submitReviewButton.currentTime = 0;
+          submitReviewButton.play();
+        }}
+      >
         {mode === 'edit' ? '💾 Save Changes' : '🍽️ Submit Review'}
       </button>
     </form>
