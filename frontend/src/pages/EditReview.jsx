@@ -19,6 +19,7 @@ const EditReview = () => {
   const [emojiRating, setEmojiRating] = useState(0);
   const [ratingType, setRatingType] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
+  const [images, setImages] = useState([]);
   const [restaurantName, setRestaurantName] = useState('');
   // State to hold form values
 
@@ -75,6 +76,13 @@ const EditReview = () => {
       setRatingType(type);
       setSelectedType(type);
       setRestaurantName(reviewData.restaurant_name || '');
+      if (reviewData.review_images?.length) {
+        const formattedImages = reviewData.review_images.map((url) => ({
+          preview: url,
+          file: null,
+        }));
+        setImages(formattedImages);
+      }
       setLoading(false);
     };
 
@@ -134,6 +142,8 @@ if ( !review.review_text.trim() && !review.activity.trim() )
           setRatingType={setRatingType}
           selectedType={selectedType}
           setSelectedType={setSelectedType}
+          images={images}
+          setImages={setImages}
           onSubmit={handleUpdate}
           mode="edit"
         />

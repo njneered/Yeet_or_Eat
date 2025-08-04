@@ -21,7 +21,7 @@ const ReviewForm = ({
   emojiRating, setEmojiRating,
   ratingType, setRatingType,
   selectedType, setSelectedType,
-  images, setImages,
+  images = [], setImages,
   onSubmit,
   mode = 'submit',
 }) => {
@@ -39,6 +39,14 @@ const ReviewForm = ({
       const type = ratingType || (emojiRating < 0 ? 'yeet' : 'eat');
       setRatingType(type);
       setSelectedType(type);
+
+      if (images?.length) {
+        const formatted = images.map((url) => ({
+          preview: url,
+          file: null, // No file object in edit mode
+        }));
+        setImages(formatted);
+      }
     }
   }, []);
   // One-time population of edit values
@@ -65,7 +73,7 @@ const ReviewForm = ({
 
     const imageObjects = files.map((file) => ({
       file,
-      previewUrl: URL.createObjectURL(file),
+      preview: URL.createObjectURL(file),
     }));
 
     setImages((prev) => [...prev, ...imageObjects]);
@@ -150,7 +158,7 @@ const ReviewForm = ({
               {images.map((img, idx) => (
                 <div key={idx} style={{ flex: '0 1 30%', maxWidth: '30%' }}>
                   <img
-                    src={img.previewUrl}
+                    src={img.preview}
                     alt={`preview-${idx}`}
                     style={{
                       width: '100%',
