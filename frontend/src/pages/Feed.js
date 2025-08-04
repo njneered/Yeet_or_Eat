@@ -3,54 +3,63 @@ import Header from '../components/Header';
 import supabase from '../supabaseClient';
 import './Feed.css';
 import ReviewCard from "../components/ReviewCard";
+import ReviewFilters from "../components/Filters";
 
 const Feed = () => {
   const [reviews, setReviews] = useState([]);
+  const [filters, setFilters] = useState(null);
+  const users = [...new Set(reviews.map(r => r.profile?.username).filter(Boolean))];
+  const restaurants = [...new Set(reviews.map(r => r.restaurant_name).filter(Boolean))];
+  const tags = [...new Set(reviews.flatMap(r => r.tags || []))];
+
+  const filteredReviews = filters
+  ? reviews.filter((review) => {
+      const matchesUser = !filters.user || review.profile?.username === filters.user;
+      const matchesRestaurant = !filters.restaurant || review.restaurant_name === filters.restaurant;
+      const matchesTag = !filters.tag || review.tags?.includes(filters.tag);
+      const matchesPicture = !filters.hasPicture || Boolean(review.image_url);
+
+      return matchesUser && matchesRestaurant && matchesTag && matchesPicture;
+    })
+  : reviews;
+
 
   useEffect(() => {
     const fetchReviews = async () => {
       const { data, error } = await supabase
         .from('reviews')
-          .select(`
-            *,
-            profile:profiles!user_id (
-              username,
-              avatar_url
-            )
-          `)
+        .select(`
+          *,
+          profile:profiles!user_id (
+            username,
+            avatar_url
+          )
+        `)
         .order('timestamp', { ascending: false });
 
-      console.log("Raw reviews:", data);
       if (error) {
         console.error(error);
-
       } else {
         const reviewsWithPics = data.map((review) => {
           const filePath = review.profile?.avatar_url;
           let profile_picture_url = '/logo-red.png';
-          console.log("Checking avatar path for user:", review.profile?.username, filePath, profile_picture_url);
-
 
           if (filePath && !filePath.startsWith('http')) {
-            // Only get public URL if it's not already a full URL
             const { data: publicData, error: urlError } = supabase
               .storage
               .from('avatars')
               .getPublicUrl(filePath);
 
-            if (urlError) {
-              console.error("Error fetching public avatar URL:", urlError);
-            } else {
-              profile_picture_url = publicData?.publicUrl;
+            if (!urlError && publicData?.publicUrl) {
+              profile_picture_url = publicData.publicUrl;
             }
-          } else if (filePath && filePath.startsWith('http')) {
-            // Already a full URL, just use it
+          } else if (filePath) {
             profile_picture_url = filePath;
           }
 
           return {
             ...review,
-            profile_picture_url
+            profile_picture_url,
           };
         });
 
@@ -66,13 +75,24 @@ const Feed = () => {
       <Header />
       <div className="feed-container">
         <h2>My Feed</h2>
-        {reviews.map((review) => (
-          <ReviewCard
-            key={review.id}
-            review={review}
-            // No edit/delete in feed, so don’t pass onDelete/onEdit
-          />
-        ))}
+
+        <ReviewFilters
+          users={users}
+          restaurants={restaurants}
+          tags={tags}
+          onFilterChange={setFilters}
+        />
+
+        {filteredReviews.length === 0 ? (
+          <p style={{ color: '#888', marginTop: '1rem' }}>No reviews match your filters.</p>
+        ) : (
+          filteredReviews.map((review) => (
+            <ReviewCard
+              key={review.id}
+              review={review}
+            />
+          ))
+        )}
       </div>
     </>
   );
