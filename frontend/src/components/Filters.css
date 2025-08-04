@@ -1,0 +1,18 @@
+.emoji-toggle {
+  background: transparent;
+  border: none;
+  font-size: 2.5rem; /* affects button size, not the emoji now */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding-bottom: 15px;
+  padding-left: 0px;
+}
+
+.emoji-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* You can remove this if you're using the filter inline on the emoji */
+.emoji-toggle.active {
+  /* optional visual pop */
+}
