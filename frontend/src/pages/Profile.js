@@ -197,6 +197,9 @@ const handleFileChange = async (e) => {
           <p>Bento Boss since {new Date(profile.created_at).getFullYear()}</p>
           <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
           <button onClick={() => navigator.clipboard.writeText(window.location.href)}>Share</button>
+          {profile.role === 'admin' && (
+          <button onClick={() => navigate('/admin')} style={{ backgroundColor: '#c00', color: 'white' }}>🛠 Go to Admin Panel</button>)}
+
         </div>
 
         {/*Recent Activities*/}

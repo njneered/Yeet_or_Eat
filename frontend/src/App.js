@@ -6,6 +6,7 @@ import Authentication from './pages/Authentication';
 import SubmitReview from './pages/SubmitReview';
 import MyReviews from './pages/MyReviews';
 import EditReview from './pages/EditReview';
+import AdminPanel from './pages/AdminPanel'
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/submit" element={<SubmitReview />} />
         <Route path="/my-reviews" element={<MyReviews />} />
         <Route path="/edit/:id" element={<EditReview />} />
+        <Route path="/admin" element={<AdminPanel />} />
         
       </Routes>
     </Router>

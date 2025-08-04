@@ -9,6 +9,7 @@ typingSound.volume = 0.5;
 
 function Authentication(){
   const navigate = useNavigate();
+    const [isAdminChecked, setIsAdminChecked] = useState(false);
     // keeps track of whether the user is logging in/signing up
     const [isLoginMode, setIsLoginMode] = useState(true);
 
@@ -38,7 +39,7 @@ async function handleSubmit(event) {
     // Optionally insert into 'profiles' table here
     if (username) {
       await supabase.from('profiles').insert([
-        { id: data.user.id, username, email }
+        { id: data.user.id, username, email, role: isAdminChecked ? 'admin' : 'member' }
       ]);
     }
     
@@ -65,7 +66,29 @@ async function handleSubmit(event) {
                         <form onSubmit={handleSubmit}>
                             <input type="email" placeholder="Email" required />
                             <input type="password" placeholder="Password" required />
-                            {!isLoginMode && <input type="username" placeholder="Username" required />}
+                            {!isLoginMode && (
+                              <>
+                                <input type="username" placeholder="Username" required />
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    marginTop: '0.5rem',
+                                    whiteSpace: 'nowrap',
+                                    fontWeight: '500',
+                                  }}
+                                >
+                                  <span style={{ lineHeight: 1 }}>Register as Admin</span>
+                                  <input
+                                    type="checkbox"
+                                    checked={isAdminChecked}
+                                    onChange={() => setIsAdminChecked(!isAdminChecked)}
+                                    style={{ transform: 'translateY(8px)' }} // subtle nudge to align better
+                                  />
+                                </div>
+                              </>
+                            )}
                             <button
                               type="submit"
                               onClick={(e) => {
