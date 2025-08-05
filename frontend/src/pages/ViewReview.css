@@ -63,3 +63,19 @@
   background-color: #777;
 }
 
+.rating-toggle {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.selected-rating {
+  background: #ffe2e2;
+  color: #f2443a;
+  padding: 0.3rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: "Fredoka", sans-serif;
+  border: 1px solid #f2443a;
+  box-shadow: 0 1px 3px rgba(242, 68, 58, 0.15);
+}

@@ -71,7 +71,14 @@ const ViewReview = () => {
     const fetchReviewAndComments = async () => {
       const { data, error } = await supabase
         .from('reviews')
-        .select(`*, profile:profiles!user_id (username)`)
+        .select(`
+            *,
+            profile:profiles!user_id (username),
+            restaurant:restaurants!restaurant_id (
+            name,
+            address
+            )
+        `)
         .eq('id', id)
         .single();
 
@@ -152,7 +159,8 @@ const handleCommentSubmit = async (e) => {
     privacy,
     tags = [],
     rating,
-    review_images = []
+    review_images = [],
+    restaurant = {}
   } = review;
 
   const ratingType = rating < 0 ? 'yeet' : 'eat';
@@ -166,6 +174,28 @@ const handleCommentSubmit = async (e) => {
         <h2>@{profile?.username || 'Unknown User'}</h2>
         <p>{timestamp ? new Date(timestamp).toLocaleString() : 'No date provided'}</p>
       </div>
+
+        <hr style={{ margin: '1rem 0', width: '100%', borderColor: '#ccc' }} />
+
+        {restaurant?.name && (
+        <div
+            style={{
+                width: '100%',
+                borderRadius: '12px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+                minHeight: '80px',
+                marginTop: '0.5rem',
+            }}
+        >
+            <h3 style={{ margin: 0 }}>{restaurant.name}</h3>
+            {restaurant.address && (
+            <p style={{ color: '#f44336', marginTop: '0.25rem', fontWeight: 'bold' }}>{`At ${restaurant.address}`}</p>
+            )}
+        </div>
+        )}
 
       {activity && (
         <div className="form-row">
@@ -242,27 +272,15 @@ const handleCommentSubmit = async (e) => {
         </div>
       )}
 
-      {ratingType && (
-        <div className="rating-toggle">
-          <label className="rating-question">Emoji Meter Rating</label>
-          <div className="rating-options">
-            <button
-              className={`option-button ${ratingType === 'yeet' ? 'selected' : ''}`}
-              style={{ pointerEvents: 'none' }}
-              disabled
-            >
-              🤢 Yeet
-            </button>
-            <button
-              className={`option-button ${ratingType === 'eat' ? 'selected' : ''}`}
-              style={{ pointerEvents: 'none' }}
-              disabled
-            >
-              🔥 Eat
-            </button>
-          </div>
+    {ratingType && (
+    <div className="rating-toggle">
+        <label className="rating-question">Emoji Meter Rating</label>
+        <div className="selected-rating">
+        {ratingType === 'yeet' ? '🤢 Yeet' : '🔥 Eat'}
         </div>
-      )}
+    </div>
+    )}
+
 
       {ratingType && (
         <div className="emoji-spectrum">
@@ -316,6 +334,7 @@ const handleCommentSubmit = async (e) => {
               }}
             />
           )}
+          
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
             <strong>@{c.profile?.username || 'Anonymous'}</strong>
             <small>
@@ -326,6 +345,7 @@ const handleCommentSubmit = async (e) => {
             </small>
           </div>
         </div>
+
 
         {/* Comment Content */}
         {editingCommentId === c.id ? (
