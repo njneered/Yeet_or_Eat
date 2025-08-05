@@ -123,6 +123,14 @@ const ReviewCard = ({ review, onDelete, onEdit }) => {
             Edit Review
           </button>
         )}
+        {review && (
+        <button
+          className="action-button"
+          onClick={() => navigate(`/view-review/${review.id}`)}
+        >
+          View
+        </button>
+        )}
       </div>
     </div>
   );

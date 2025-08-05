@@ -10,6 +10,7 @@ import AdminPanel from './pages/AdminPanel'
 import WannaEat from './pages/WannaEat';
 import GonnaEat from './pages/GonnaEat';
 import AlreadyAte from './pages/AlreadyAte';
+import ViewReview from './pages/ViewReview';
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
         <Route path="/wanna-eat" element={<WannaEat />}/>
         <Route path="/gonna-eat" element={<GonnaEat />}/>
         <Route path="/already-ate" element={<AlreadyAte />} />
+        <Route path="/view-review/:id" element={<ViewReview />} />
+
         
       </Routes>
     </Router>

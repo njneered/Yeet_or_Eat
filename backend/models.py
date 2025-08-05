@@ -36,6 +36,7 @@ class Profile(db.Model):
     email = db.Column(db.String(), nullable=False, unique=True)
     avatar_url = db.Column(db.Text)
     created_at = db.Column(db.DateTime(timezone=True))
+    role = db.Column(db.Text)
 
     reviews = db.relationship("Review", backref="profile", lazy=True)
     
@@ -57,3 +58,18 @@ class Review(db.Model):
     cuisine = db.Column(db.Text)
     privacy = db.Column(db.Text)
     tags = db.Column(ARRAY(db.Text))
+    
+    review = db.relationship('Review', backref='comment_list')
+    
+class Comment(db.Model):
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    review_id = db.Column(db.Integer, db.ForeignKey('reviews.id'), nullable=False)
+    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey('profiles.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+
+    # Optional relationship for easier access
+    user = db.relationship('Profile', backref='comments')
+    review = db.relationship('Review', backref='comment_list')
