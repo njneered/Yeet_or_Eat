@@ -7,26 +7,38 @@ padding: 0 0 2rem;
     max-width: 800px;
     margin: 0 auto;
     font-family: "Fredoka", sans-serif;
+
+    
 }
 
 .add-restaurant-button {
-  background-color: #c0c0c0;
-  border: 2px dashed #ffd6d6;
+     background-color: #fff8f8;
+
+    border-color: #f2443a;
+border: 2px dashed #f2443a;
   border-radius: 15px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 150px;
+  height: 150px;
+  margin-bottom: 2rem auto;
+  text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   font-family: "Fredoka", sans-serif;
-  color: #333;
   position: relative;
-  font-weight: bold;
+  font-weight:lighter;
   cursor: pointer;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
+    margin-top: 1rem;
 }
 
+
 .add-restaurant-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    background: white;
+    color: #f2443a;
+    border-color: #f2443a;
+    border-radius: 15px;
+    transform: scale(1.03);
 }
 
 

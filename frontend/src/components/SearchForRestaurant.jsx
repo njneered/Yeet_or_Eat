@@ -57,7 +57,7 @@ const SearchForRestaurant = ({ onRestaurantSelect }) => {
 
     return (
         <div className = "search-container">
-            <h2>Search for a restaurant to review...</h2>
+            <h2>Search for a restaurant...</h2>
             <div className="search-row">
                 <input
                 type="text"
