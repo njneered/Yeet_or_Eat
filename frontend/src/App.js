@@ -11,6 +11,7 @@ import WannaEat from './pages/WannaEat';
 import GonnaEat from './pages/GonnaEat';
 import AlreadyAte from './pages/AlreadyAte';
 import ViewReview from './pages/ViewReview';
+import EditProfile from "./pages/EditProfile";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/gonna-eat" element={<GonnaEat />}/>
         <Route path="/already-ate" element={<AlreadyAte />} />
         <Route path="/view-review/:id" element={<ViewReview />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
 
         
       </Routes>
