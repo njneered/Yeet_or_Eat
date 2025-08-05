@@ -20,6 +20,7 @@ const ViewReview = () => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editCommentId, setEditCommentId] = useState(null);
   const [editedContent, setEditedContent] = useState('');
+  
 
 
     const fetchComments = async () => {
@@ -219,7 +220,7 @@ const handleCommentSubmit = async (e) => {
       )}
 
 
-        {review_images.length > 0 && (
+        {Array.isArray(review_images) && review_images.length > 0 && (
   <div
     style={{
       maxHeight: '500px',           // Limit height to trigger scrolling
