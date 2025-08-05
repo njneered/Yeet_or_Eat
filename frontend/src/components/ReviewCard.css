@@ -151,20 +151,39 @@
   width: 100%;
 }
 
-.tag-container {
+.tag-container{
   margin-top: 0.5rem;
   margin-left: 50px;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+
 }
 
 .tag {
-  background: #f1f1f1;
+  background: #ffe2e2;
+  color: #f2443a;
   padding: 0.3rem 0.6rem;
   border-radius: 1rem;
   font-size: 0.9rem;
   font-weight: 500;
   font-family: "Fredoka", sans-serif;
-  color: #333;
+  border: 1px solid #f2443a;
+  box-shadow: 0 1px 3px rgba(242, 68, 58, 0.15);
+}
+
+.tag-container-for-view {
+  margin-top: 0.5rem;
+  margin-left: 0px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag-container-for-feed {
+  margin-top: 0.5rem;
+  margin-left: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }

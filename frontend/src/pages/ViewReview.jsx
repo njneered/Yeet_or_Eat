@@ -232,7 +232,7 @@ const handleCommentSubmit = async (e) => {
       {tags.length > 0 && (
         <div className="tags">
           <label>Tags:</label>
-          <div className="tag-container">
+          <div className="tag-container-for-view">
             {tags.map((tag, idx) => (
               <span key={idx} className="tag selected">
                 {tag}

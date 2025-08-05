@@ -90,6 +90,7 @@ const Feed = () => {
             <ReviewCard
               key={review.id}
               review={review}
+              context="feed"
             />
           ))
         )}
