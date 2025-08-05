@@ -7,7 +7,9 @@ import SubmitReview from './pages/SubmitReview';
 import MyReviews from './pages/MyReviews';
 import EditReview from './pages/EditReview';
 import AdminPanel from './pages/AdminPanel'
-
+import WannaEat from './pages/WannaEat';
+import GonnaEat from './pages/GonnaEat';
+import AlreadyAte from './pages/AlreadyAte';
 
 function App() {
   return (
@@ -20,6 +22,9 @@ function App() {
         <Route path="/my-reviews" element={<MyReviews />} />
         <Route path="/edit/:id" element={<EditReview />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/wanna-eat" element={<WannaEat />}/>
+        <Route path="/gonna-eat" element={<GonnaEat />}/>
+        <Route path="/already-ate" element={<AlreadyAte />} />
         
       </Routes>
     </Router>
