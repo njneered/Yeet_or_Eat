@@ -12,6 +12,7 @@ import GonnaEat from './pages/GonnaEat';
 import AlreadyAte from './pages/AlreadyAte';
 import ViewReview from './pages/ViewReview';
 import EditProfile from "./pages/EditProfile";
+import PublicProfile from "./pages/PublicProfile";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/already-ate" element={<AlreadyAte />} />
         <Route path="/view-review/:id" element={<ViewReview />} />
         <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/user/:username" element={<PublicProfile />} />
 
         
       </Routes>

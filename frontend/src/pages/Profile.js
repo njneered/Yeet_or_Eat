@@ -100,7 +100,7 @@ const Profile = () => {
           <p>Bento Boss since {new Date(profile.created_at).getFullYear()}</p>
 
           <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
-          <button onClick={() => navigator.clipboard.writeText(window.location.href)}>Share</button>
+          <button onClick={() => {navigator.clipboard.writeText(`${window.location.origin}/user/${profile.username}`);}}>Share</button>
           {profile.role === 'admin' && (
             <button
               onClick={() => navigate('/admin')}
