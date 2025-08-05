@@ -217,7 +217,7 @@ const handleFileChange = async (e) => {
           </div>
           {showTop10 && (
             <div className="dropdown-content">
-              <p>Their top 10.</p>
+              <p>Your top 10.</p>
             </div>
           )}
 
@@ -226,7 +226,7 @@ const handleFileChange = async (e) => {
           </div>
           {showBoards && (
             <div className="dropdown-content">
-              <p>Clubs that the they've joined.</p>
+              <p>Clubs that you've joined.</p>
             </div>
           )}
         </div>
