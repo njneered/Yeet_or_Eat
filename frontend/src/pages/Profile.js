@@ -1,5 +1,5 @@
 import Header from '../components/Header';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '../supabaseClient';
 import './Profile.css';
@@ -11,198 +11,107 @@ const Profile = () => {
   const [showTop10, setShowTop10] = useState(false);
   const [showBoards, setShowBoards] = useState(false);
   const navigate = useNavigate();
-  const fileInputRef = useRef(null);
 
-useEffect(() => {
-  const fetchProfileAndReviews = async () => {
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser();
+  useEffect(() => {
+    const fetchProfileAndReviews = async () => {
+      const {
+        data: { user },
+        error: userError
+      } = await supabase.auth.getUser();
 
-    if (userError || !user) {
-      console.error("User fetch error:", userError);
-      return;
-    }
+      if (userError || !user) {
+        console.error("User fetch error:", userError);
+        return;
+      }
 
-    // Fetch profile info
-    const { data: profileData, error: profileError } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single();
+      // Fetch profile info
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
 
-    if (profileError) {
-      console.error("Profile fetch error:", profileError);
-      return;
-    }
+      if (profileError) {
+        console.error("Profile fetch error:", profileError);
+        return;
+      }
 
-    setProfile(profileData);
+      setProfile(profileData);
 
-    // Fetch their reviews
-    const { data: rawReviews, error: reviewsError } = await supabase
-      .from('reviews')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('timestamp', { ascending: false });
+      // Fetch reviews
+      const { data: rawReviews, error: reviewsError } = await supabase
+        .from('reviews')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('timestamp', { ascending: false });
 
-    if (reviewsError) {
-      console.error("Review fetch error:", reviewsError.message);
-      return;
-    }
+      if (reviewsError) {
+        console.error("Review fetch error:", reviewsError.message);
+        return;
+      }
 
-    // Attach profile picture URL to each review
-       const reviewsWithPics = rawReviews.map((review) => {
-          const filePath = profileData.avatar_url;
-          let profile_picture_url = '/logo-red.png';
-          console.log("Checking avatar path for user:", profile?.username, filePath, profile_picture_url);
+      const reviewsWithPics = rawReviews.map((review) => ({
+        ...review,
+        profile_picture_url: profileData.avatar_url || '/logo-red.png'
+      }));
 
+      setReviews(reviewsWithPics);
+    };
 
-          if (filePath && !filePath.startsWith('http')) {
-            // Only get public URL if it's not already a full URL
-            const { data: publicData, error: urlError } = supabase
-              .storage
-              .from('avatars')
-              .getPublicUrl(filePath);
+    fetchProfileAndReviews();
+  }, []);
 
-            if (urlError) {
-              console.error("Error fetching public avatar URL:", urlError);
-            } else {
-              profile_picture_url = publicData?.publicUrl;
-            }
-          } else if (filePath && filePath.startsWith('http')) {
-            // Already a full URL, just use it
-            profile_picture_url = filePath;
-          }
-
-          return {
-            ...review,
-            profile_picture_url
-          };
-        });
-
-    setReviews(reviewsWithPics);
-  };
-
-  fetchProfileAndReviews();
-}, []);
-
-
-  const handleAvatarClick = () => {
-  fileInputRef.current.click();
-};
-
-const handleFileChange = async (e) => {
-  const file = e.target.files[0];
-  if (!file) {
-    console.log("No file selected");
-    return;
+  if (!profile) {
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        textAlign: 'center'
+      }}>
+        <h1>Wait here bro... ⏲️</h1>
+        <p>Loading ur profile...</p>
+      </div>
+    );
   }
-
-  console.log("Selected file:", file);
-
-  const fileExt = file.name.split('.').pop();
-  const fileName = `${profile.id}.${fileExt}`;
-  const filePath = fileName; 
-
-  console.log("Uploading file to:", filePath);
-  console.log("Profile ID being used:", profile?.id);
-
-  // upload to supabase storage
-  const { data: uploadData, error: uploadError } = await supabase.storage
-    .from('avatars')
-    .upload(filePath, file, { upsert: true });
-
-  if (uploadError) {
-    console.error('Upload failed:', uploadError.message);
-    return;
-  }
-  console.log("Upload successful:", uploadData)
-
-  // get public url
-  const { data: urlData, error: urlError } = supabase.storage
-    .from('avatars')
-    .getPublicUrl(filePath);
-
-  if (urlError) {
-    console.error('Failed to get public URL:', urlError.message);
-    return;
-  }
-
-  const publicUrl = urlData.publicUrl;
-  console.log("Public URL generated:", publicUrl);
-
-  // update avatar to profiles table
-  const { error: updateError,} = await supabase
-    .from('profiles')
-    .update({ avatar_url: publicUrl })
-    .eq('id', profile.id);
-
-  if (updateError) {
-    console.error('Profile update failed:', updateError.message);
-    return;
-  }
-
-  console.log("Updating avatar for user ID:", profile.id);
-  console.log("Profile updated with new avatar URL");
-
-
-  // changes reflect in ui
-  setProfile(prev => ({ ...prev, avatar_url: publicUrl }));
-};
-
-
-  if (!profile) return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      textAlign: 'center'
-    }}>
-      <h1>Wait here bro... ⏲️</h1>
-      <p>Loading ur profile...</p>
-    </div>
-  );
-
-
-
 
   return (
     <>
       <Header />
+      <div className="profile-page">
+        <div className="profile-header">
+         <div className="avatar-circle-static">
+            <img
+              src={profile.avatar_url || 'logo-red.png'}
+              alt="User avatar"
+              className="avatar-img"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = '/default-avatar.png';
+              }}
+            />
 
-      <div className = "profile-page">
-        <div className = "profile-header">
-          <div className="avatar-circle" onClick={handleAvatarClick}>
-            {profile.avatar_url ? (
-              <img src={profile.avatar_url} alt="avatar" className="avatar-img" />
-            ) : (
-              <span className="plus-icon">+</span>
-            )}
           </div>
-
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            style={{ display: 'none' }}
-            onChange={handleFileChange}
-          />
-
           <h2>{profile.username}</h2>
-          <p>{profile.location}</p>
-          <p>{profile.bio}</p>
+          {profile?.bio && <p className="bio-text"><em>{profile.bio}</em></p>}
+          {profile?.location && <p className="location-text">📍 {profile.location}</p>}
           <p>Bento Boss since {new Date(profile.created_at).getFullYear()}</p>
+
           <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
           <button onClick={() => navigator.clipboard.writeText(window.location.href)}>Share</button>
           {profile.role === 'admin' && (
-          <button onClick={() => navigate('/admin')} style={{ backgroundColor: '#c00', color: 'white' }}>🛠 Go to Admin Panel</button>)}
-
+            <button
+              onClick={() => navigate('/admin')}
+              style={{ backgroundColor: '#c00', color: 'white' }}
+            >
+              🛠 Go to Admin Panel
+            </button>
+          )}
         </div>
 
-        {/*Recent Activities*/}
+        {/* Reviews */}
         <div className="profile-reviews">
           <h3>Recent Reviews</h3>
           {reviews.map((review) => (
@@ -210,10 +119,10 @@ const handleFileChange = async (e) => {
           ))}
         </div>
 
-        {/* Dropdowns */}
+        {/* Widgets */}
         <div className="profile-widgets">
           <div className="dropdown-box" onClick={() => setShowTop10(!showTop10)}>
-             Top 10 List {showTop10 ? '▲' : '▼'}
+            Top 10 List {showTop10 ? '▲' : '▼'}
           </div>
           {showTop10 && (
             <div className="dropdown-content">
@@ -222,7 +131,7 @@ const handleFileChange = async (e) => {
           )}
 
           <div className="dropdown-box" onClick={() => setShowBoards(!showBoards)}>
-             Charcuterie Boards {showBoards ? '▲' : '▼'}
+            Charcuterie Boards {showBoards ? '▲' : '▼'}
           </div>
           {showBoards && (
             <div className="dropdown-content">
@@ -231,13 +140,8 @@ const handleFileChange = async (e) => {
           )}
         </div>
       </div>
-    </>  
+    </>
   );
-
 };
-
-
-
-
 
 export default Profile;
