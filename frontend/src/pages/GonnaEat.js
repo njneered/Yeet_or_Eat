@@ -13,32 +13,44 @@ const GonnaEat = () => {
     setShowSearch(false);
   };
 
+    const handleRemoveRestaurant = (removeIndex) => {
+    setSelectedRestaurants((prev) =>
+        prev.filter((_, index) => index !== removeIndex)
+    );
+  };
+
+
   return (
+
     <div className="gonna-eat-page">
-      <Header />
-      
-      <h2>What You're Gonna Eat</h2>
+     <Header />
+            <div className="gonna-eat-content"> 
+                <h2>What You Gonna Eat</h2>
+                <button onClick={() => setShowSearch(true)} className="add-restaurant-button">+ Add a Restaurant</button>
+                {showSearch && (
+                    <SearchForRestaurant
+                        onRestaurantSelect={handleSelectRestaurant}
+                        onClose={() => setShowSearch(false)}
+                    />    
+                )}    
+                
+                <div className="restaurant-list">
+                    {selectedRestaurants.map((restaurant, index) => (
+                        <div className="mini-card" key={index}>
+                            <h4>{restaurant.name}</h4>
+                            <p>{restaurant.location}</p>
 
-      <button onClick={() => setShowSearch(true)} className="add-restaurant-button">
-        + Add a Restaurant
-      </button>
-
-      {showSearch && (
-        <SearchForRestaurant
-          onSelect={handleSelectRestaurant}
-          onClose={() => setShowSearch(false)}
-        />
-      )}
-
-      <div className="restaurant-list">
-        {selectedRestaurants.map((restaurant, index) => (
-          <div className="mini-card" key={index}>
-            <h4>{restaurant.name}</h4>
-            <p>{restaurant.location}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+                            <button
+                                className="remove-button"
+                                onClick={(() => handleRemoveRestaurant(index))}
+                                >
+                                    Delete
+                            </button>
+                        </div>    
+                    ))}
+                </div>
+            </div>            
+    </div>                
   );
 };
 

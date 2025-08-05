@@ -1,5 +1,12 @@
 .already-ate-page{
+padding: 0 0 2rem;
+    font-family: "Fredoka", sans-serif;
+}
+
+.already-ate-content{
     padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
     font-family: "Fredoka", sans-serif;
 }
 
@@ -26,4 +33,21 @@
     border-left: 5px solid #f2443a;
     padding: 1rem;
     border-radius: 5px;
+}
+
+.remove-button {
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background-color: #ffd6d6;
+  border: none;
+  border-radius: 5px;
+  color: #c00;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: "Fredoka", sans-serif;
+}
+
+.remove-button:hover{
+    transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
 }
