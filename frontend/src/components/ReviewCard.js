@@ -94,18 +94,9 @@ const ReviewCard = ({ review, onDelete, onEdit }) => {
 
 
         {review.tags && review.tags.length > 0 && (
-          <div className="tag-container" style={{ marginTop: '0.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div className="tag-container">
             {review.tags.map((tag, index) => (
-              <span
-                key={index}
-                style={{
-                  background: '#f1f1f1',
-                  padding: '0.3rem 0.6rem',
-                  borderRadius: '1rem',
-                  fontSize: '0.9rem',
-                  fontWeight: '500',
-                }}
-              >
+              <span className="tag" key={index}>
                 {tag}
               </span>
             ))}

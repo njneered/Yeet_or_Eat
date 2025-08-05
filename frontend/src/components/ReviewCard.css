@@ -92,7 +92,7 @@
 
 /* Rating emojis and review */
 .review-text-content {
-  margin-left: 70px;
+  margin-left: 50px;
   margin-top: 0.5rem;
 }
 
@@ -149,4 +149,22 @@
   justify-content: center;
   margin-top: 1rem;
   width: 100%;
+}
+
+.tag-container {
+  margin-top: 0.5rem;
+  margin-left: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background: #f1f1f1;
+  padding: 0.3rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: "Fredoka", sans-serif;
+  color: #333;
 }
