@@ -143,3 +143,10 @@
   border-color: #f2443a;
   transform: scale(1.03);
 }
+
+.view-button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  width: 100%;
+}

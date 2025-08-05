@@ -124,12 +124,14 @@ const ReviewCard = ({ review, onDelete, onEdit }) => {
           </button>
         )}
         {review && (
+          <div className="view-button-wrapper">
         <button
           className="action-button"
           onClick={() => navigate(`/view-review/${review.id}`)}
         >
           View
         </button>
+        </div>
         )}
       </div>
     </div>
