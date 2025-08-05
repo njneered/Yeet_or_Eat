@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Header from '../components/Header';
 import { useParams } from 'react-router-dom';
 import supabase from '../supabaseClient';
 import '../pages/SubmitReview.css';
@@ -158,6 +159,8 @@ const handleCommentSubmit = async (e) => {
   const emojiRating = Math.abs(rating);
 
   return (
+    <>
+    <Header />
     <div className="submit-review">
       <div className="restaurant-info">
         <h2>@{profile?.username || 'Unknown User'}</h2>
@@ -430,6 +433,7 @@ const handleCommentSubmit = async (e) => {
 
 
     </div>
+    </>
   );
 };
 
