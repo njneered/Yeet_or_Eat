@@ -220,45 +220,19 @@ const handleCommentSubmit = async (e) => {
       )}
 
 
-        {Array.isArray(review_images) && review_images.length > 0 && (
-  <div
-    style={{
-      maxHeight: '500px',           // Limit height to trigger scrolling
-      overflowY: 'auto',            // Vertical scroll
-      marginBottom: '1rem',
-      padding: '1rem',
-      border: '2px solid #eee',
-      borderRadius: '12px',
-      backgroundColor: '#fdfdfd',
-    }}
-  >
-    <div
-      className="upload-box"
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: '1rem',
-      }}
-    >
-      {review_images.map((img, idx) => (
-        <img
-          key={idx}
-          src={img}
-          alt={`review-${idx}`}
-          style={{
-            width: '100%',
-            height: '200px',
-            objectFit: 'cover',
-            borderRadius: '12px',
-            cursor: 'pointer',           // optional for interactivity
-            userSelect: 'auto',          // allow selection
-          }}
-        />
-      ))}
-    </div>
-  </div>
+      {Array.isArray(review_images) && review_images.length > 0 && (
+          <div className="review-images-container">
+            {review_images.map((img, idx) => (
+              <div className="review-image-wrapper" key={idx}>
+                <img
+                  src={img}
+                  alt={`review-${idx}`}
+                  className="review-image"
+                />
+              </div>
+            ))}
+          </div>
 )}
-
 
       {tags.length > 0 && (
         <div className="tags">

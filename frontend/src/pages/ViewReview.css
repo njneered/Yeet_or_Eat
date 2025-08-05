@@ -79,3 +79,37 @@
   border: 1px solid #f2443a;
   box-shadow: 0 1px 3px rgba(242, 68, 58, 0.15);
 }
+
+.review-images-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 2px solid #eee;
+  border-radius: 12px;
+  background-color: #fdfdfd;
+  margin-bottom: 1rem;
+}
+
+.review-image-wrapper {
+  max-width: 300px;
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.review-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.review-image:hover {
+  transform: scale(1.05);
+}
