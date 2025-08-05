@@ -97,7 +97,7 @@ const AdminPanel = () => {
         const matchesUser = !filters.user || review.profile?.username === filters.user;
         const matchesRestaurant = !filters.restaurant || review.restaurant_name === filters.restaurant;
         const matchesTag = !filters.tag || review.tags?.includes(filters.tag);
-        const matchesPicture = !filters.hasPicture || Boolean(review.image_url);
+        const matchesPicture = !filters.hasPicture || (Array.isArray(review.review_images) && review.review_images.length > 0);
         return matchesUser && matchesRestaurant && matchesTag && matchesPicture;
       })
     : reviews;

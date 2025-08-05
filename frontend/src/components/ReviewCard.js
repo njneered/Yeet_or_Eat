@@ -66,7 +66,32 @@ const ReviewCard = ({ review, onDelete, onEdit }) => {
           ))}
         </div>
         <p>{review.review_text}</p>
+
+        {review.review_images?.length > 0 && (
+          <div style={{
+            display: 'flex',
+            overflowX: 'auto',
+            gap: '0.5rem',
+            marginTop: '0.5rem',
+            paddingBottom: '0.5rem'
+          }}>
+            {review.review_images.map((img, index) => (
+              <img
+                key={index}
+                src={img}
+                alt={`Review ${index}`}
+                style={{
+                  height: '150px',
+                  borderRadius: '8px',
+                  objectFit: 'cover',
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
+
+
 
         {review.tags && review.tags.length > 0 && (
           <div className="tag-container" style={{ marginTop: '0.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
