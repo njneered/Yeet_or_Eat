@@ -13,7 +13,8 @@ const ViewReview = () => {
   const [review, setReview] = useState(null);
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
+  const [mainComment, setMainComment] = useState('');
+  const [replyContent, setReplyContent] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editedContent, setEditedContent] = useState('');
@@ -79,21 +80,27 @@ const ViewReview = () => {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
-    if (!newComment.trim()) return;
+    const contentToSubmit = replyingToId ? replyContent : mainComment;
+
+    if (!contentToSubmit.trim()) return;
 
     const payload = {
-      content: newComment,
+      content: contentToSubmit,
       user_id: currentUser.id,
       review_id: id,
-      ...(replyingToId ? { parent_comment_id: replyingToId } : {})
     };
+
+    if (replyingToId) {
+      payload.parent_comment_id = replyingToId;
+    }
 
     const { error } = await supabase.from('comments').insert([payload]);
 
     if (error) console.error("Failed to insert comment:", error);
     else {
       await fetchComments();
-      setNewComment('');
+      setMainComment('');
+      setReplyContent('');
       setReplyingToId(null);
     }
   };
@@ -199,7 +206,7 @@ const ViewReview = () => {
               <div className="comment-actions">
                 <button onClick={() => {
                   setReplyingToId(c.id);
-                  setNewComment('');
+                  setReplyContent('');
                 }}>Reply</button>
                 {currentUser?.id === c.user_id && (
                   <>
@@ -215,8 +222,8 @@ const ViewReview = () => {
               {replyingToId === c.id && (
                 <form onSubmit={handleCommentSubmit} style={{ marginTop: '0.5rem' }}>
                   <textarea
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
+                    value={replyContent}
+                    onChange={(e) => setReplyContent(e.target.value)}
                     placeholder="Write a reply..."
                     style={{
                       width: '100%',
@@ -227,7 +234,9 @@ const ViewReview = () => {
                     }}
                     required
                   />
-                  <button type="submit" className="comment-action-button">Post Reply</button>
+                  <button type="submit" className="comment-action-button">
+                    Post Reply
+                  </button>
                 </form>
               )}
 
@@ -257,8 +266,8 @@ const ViewReview = () => {
           {/* New Comment */}
           <form onSubmit={handleCommentSubmit} style={{ marginTop: '2rem' }}>
             <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
+              value={mainComment}
+              onChange={(e) => setMainComment(e.target.value)}
               placeholder="Leave a comment..."
               style={{
                 width: '100%',
