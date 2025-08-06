@@ -14,10 +14,13 @@
   margin-bottom: 0.25rem;
 }
 
-.avatar {
+.avatar,
+.comment-avatar,
+.reply-avatar {
   width: 36px;
   height: 36px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .comment-text {
@@ -30,6 +33,30 @@
 
 .comment-controls button {
   margin: 0 0.25rem;
+}
+
+/* 🔴 Themed comment action buttons */
+.comment-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.comment-actions button {
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.comment-actions button:hover {
+  background-color: #e04e53;
 }
 
 .comment-action-button {
@@ -112,4 +139,21 @@
 
 .review-image:hover {
   transform: scale(1.05);
+}
+
+.reply {
+  margin-left: 1.5rem;
+  border-left: 2px solid #eee;
+  padding-left: 1rem;
+  margin-top: 0.75rem;
+}
+
+.reply-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reply-content {
+  margin-top: 0.25rem;
 }
