@@ -113,3 +113,70 @@
 .review-image:hover {
   transform: scale(1.05);
 }
+
+.comment-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.comment-avatar-small {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.reply {
+  margin-top: 1rem;
+  padding-left: 2.5rem;
+  border-left: 2px solid #eee;
+}
+
+.reply-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.reply-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.reply-content {
+  margin-left: 2.5rem;
+  font-size: 0.95rem;
+}
+.comment-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.comment-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.comment-actions button {
+  background-color: #ff5a5f; /* Red theme */
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.comment-actions button:hover {
+  background-color: #e04e53;
+}
