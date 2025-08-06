@@ -216,7 +216,21 @@ const ViewReview = () => {
                 </div>
               </div>
 
-              <p>{c.content}</p>
+                {editingCommentId === c.id ? (
+                <>
+                    <textarea
+                    value={editedContent}
+                    onChange={(e) => setEditedContent(e.target.value)}
+                    placeholder="Edit your comment..."
+                    required
+                    style={{ width: '100%', padding: '0.5rem', marginTop: '0.5rem' }}
+                    />
+                    <button onClick={() => handleSaveComment(c.id)} className="comment-action-button">Save</button>
+                    <button onClick={() => setEditingCommentId(null)} className="comment-action-button cancel">Cancel</button>
+                </>
+                ) : (
+                <p>{c.content}</p>
+                )}
 
               <div className="comment-actions">
                 <button onClick={() => {
