@@ -115,6 +115,21 @@ const ViewReview = () => {
     else fetchComments();
   };
 
+  const handleSaveComment = async (commentId) => {
+  const { error } = await supabase
+    .from('comments')
+    .update({ content: editedContent })
+    .eq('id', commentId);
+
+  if (error) {
+    console.error("Update failed:", error);
+  } else {
+    await fetchComments();
+    setEditingCommentId(null);
+    setEditedContent('');
+  }
+};
+
   if (loading) return <p>Loading...</p>;
   if (!review) return <p>Review not found.</p>;
 
@@ -240,26 +255,47 @@ const ViewReview = () => {
                 </form>
               )}
 
-              {c.replies?.length > 0 && (
-                <div className="reply-thread">
-                  {c.replies.map(r => (
-                    <div key={r.id} className="reply">
-                      <div className="reply-header">
-                        <img
-                          src={r.profile?.avatar_url || DEFAULT_AVATAR}
-                          alt="avatar"
-                          className="reply-avatar"
-                        />
-                        <strong>@{r.profile?.username || 'Anonymous'}</strong>
-                        <small style={{ color: '#999', marginLeft: '0.5rem' }}>
-                          {new Date(r.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </small>
-                      </div>
-                      <p className="reply-content">{r.content}</p>
+              {c.replies.map(r => (
+                <div key={r.id} className="reply">
+                  <div className="reply-header">
+                    <img
+                      src={r.profile?.avatar_url || DEFAULT_AVATAR}
+                      alt="avatar"
+                      className="reply-avatar"
+                    />
+                    <strong>@{r.profile?.username || 'Anonymous'}</strong>
+                    <small style={{ color: '#999', marginLeft: '0.5rem' }}>
+                      {new Date(r.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </small>
+                  </div>
+
+                  {/* ✅ Replace this: <p className="reply-content">{r.content}</p> */}
+                  {editingCommentId === r.id ? (
+                    <>
+                      <textarea
+                        value={editedContent}
+                        onChange={(e) => setEditedContent(e.target.value)}
+                        placeholder="Edit your comment..."
+                        required
+                        style={{ width: '100%', padding: '0.5rem', marginTop: '0.5rem' }}
+                      />
+                      <button onClick={() => handleSaveComment(r.id)} className="comment-action-button">Save</button>
+                      <button onClick={() => setEditingCommentId(null)} className="comment-action-button cancel">Cancel</button>
+                    </>
+                  ) : (
+                    <p className="reply-content">{r.content}</p>
+                  )}
+                  {currentUser?.id === r.user_id && (
+                    <div className="comment-actions">
+                      <button onClick={() => {
+                        setEditingCommentId(r.id);
+                        setEditedContent(r.content);
+                      }}>Edit</button>
+                      <button onClick={() => handleDeleteComment(r.id)}>Delete</button>
                     </div>
-                  ))}
+                  )}
                 </div>
-              )}
+              ))}
             </div>
           ))}
 
