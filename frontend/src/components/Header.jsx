@@ -140,7 +140,7 @@ const Header =() => {
                             </div>
                             {settingsDropdown && (
                                 <div className="submenu">
-                                    <Link to="/profile-settings" className="submenu-link">Edit Profile</Link>
+                                    <Link to="/edit-profile" className="submenu-link">Edit Profile</Link>
                                           <div
                                                 className="submenu-link"
                                                 onClick={handleLogout}
