@@ -36,7 +36,7 @@ const EditProfile = () => {
   const handleSave = async () => {
     const { error } = await supabase
       .from('profiles')
-      .update({ bio, location })
+      .update({ bio, location, avatar_url: avatarUrl})
       .eq('id', userId);
 
     if (!error) {
@@ -96,11 +96,29 @@ const EditProfile = () => {
         <h1>🧑‍🍳 Customize Your Bento Identity</h1>
         <p className="subtitle">Your face, your flavor 🍱</p>
 
-        <div className="avatar-upload-section" onClick={handleAvatarClick}>
-          {avatarUrl ? (
-            <img src={avatarUrl} alt="avatar" className="avatar-img-preview" />
-          ) : (
-            <div className="avatar-placeholder">+</div>
+        <div className="avatar-wrapper">
+          <div className="avatar-upload-section" onClick={handleAvatarClick}>
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="avatar" className="avatar-img-preview" />
+            ) : (
+              <div className="avatar-placeholder">+</div>
+            )}
+          </div>
+
+          {avatarUrl && (
+            <button
+              className="remove-avatar-btn"
+              onClick={async () => {
+                setAvatarUrl('');
+                const { error } = await supabase
+                  .from('profiles')
+                  .update({ avatar_url: null })
+                  .eq('id', userId);
+                if (error) console.error('Failed to remove avatar:', error.message);
+              }}
+            >
+              🗑 Remove Avatar
+            </button>
           )}
         </div>
         <input
@@ -110,7 +128,6 @@ const EditProfile = () => {
           style={{ display: 'none' }}
           onChange={handleFileChange}
         />
-
         <div className="edit-form">
           <label>
             📝 Bio:
