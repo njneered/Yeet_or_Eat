@@ -1,6 +1,10 @@
 # YEET OR EAT
 
-A chaotic, meme-friendly review app where college students rate meals with the same energy they rate memes. Built for hot takes, food therapy, and midnight taco thoughts. Live demo of auth page and submitting a review here: https://youtu.be/JzmPPDLMIIs
+A chaotic, meme-friendly review app where college students rate meals with the same energy they rate memes. Built for hot takes, food therapy, and midnight taco thoughts.
+<img width="1080" height="556" alt="image" src="https://github.com/user-attachments/assets/45b776dd-5424-458e-bab8-d76396566b2c" />
+
+
+>Live demo of auth page and submitting a review here: https://youtu.be/JzmPPDLMIIs
 
 
 ## Overview
